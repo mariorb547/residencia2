@@ -463,7 +463,7 @@ export default class RevisionSemanal extends Component{
                 key: 'evidencia',
                 render: (text, record) => (
                     <div disabled>
-                        <WrappedAddEvidencia  disabledAddEvidencia={record.estado_revision_semanal}
+                        <WrappedAddEvidencia  disabledAddEvidencia={record.estado_revision_semanal} fecha_entrega={record.fecha_entrega}
                         ruta={"/api/alumno/file_evidencia/"+record.id} tarea={record.id} showEvidencia={this.obtenerTareas}/>
 
                     </div>

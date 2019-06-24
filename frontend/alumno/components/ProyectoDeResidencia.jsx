@@ -139,7 +139,7 @@ export default class ProyectoDeResidencia extends Component{
                              <a style={{color: '#4da1ff'}} href="/plantillas/plan_de_trabajo.docx">Plantilla de plan de trabajo <Icon type="cloud-download"/></a>
                          </Col> 
                         <Col xs={24} lg={4}>
-                            <Button icon="plus" type="primary" onClick={this.showAddActividadGeneral}>Registrar plan de trabajo</Button>
+                            <Button icon="plus" disabled={!this.state.disabledDescargarPlan}  type="primary" onClick={this.showAddActividadGeneral}>Registrar plan de trabajo</Button>
                         </Col>
                         <Col xs={24} lg={4}>
                             <Button icon="eye" type="primary" onClick={this.showPlanDeTrabajo}>Visulizar plan de trabajo</Button>

@@ -42,7 +42,9 @@ export default class ObtenerPlanDeTrabajo extends Component{
             dataSource_observaciones:[],
             tipo_observacion:null,
             visibleShowObservacion:false,
-            visibleRegistrarActividadGeneral:false
+            visibleRegistrarActividadGeneral:false,
+            planAprobado:false,
+            totalHoras:0
             
             
             
@@ -63,7 +65,9 @@ export default class ObtenerPlanDeTrabajo extends Component{
           visibleRegistrarActividadGeneral:false,
           dataSource_actividad_general:nextProps.dataSource_actividad_general,
           dataSource_subactividades:nextProps.dataSource_subactividades,
-          dataSource_tareas:nextProps.dataSource_tareas
+          dataSource_tareas:nextProps.dataSource_tareas,
+          planAprobado:nextProps.planAprobado,
+          totalHoras:nextProps.totalHoras
 
          })
         //se cargan las subactividades y tareas
@@ -308,6 +312,7 @@ export default class ObtenerPlanDeTrabajo extends Component{
       
       var observacionData=[]
       var tareasData=[]
+      var horas=0;
     
     
   
@@ -342,13 +347,22 @@ export default class ObtenerPlanDeTrabajo extends Component{
                                 })
                            })
                             
+                           //si  hay alguna tarea no aproda entra al if 
+                           if(tarea.estado_revision_plan!=="aprobado"){
+                             this.setState({
+                               planAprobado:true
+                             })
+                           }
+
+                           horas+=parseInt(tarea.horas);
                       })
                   })
               })
               
             this.setState({
                 dataSource_observaciones:observacionData,
-                dataSource_tareas:tareasData
+                dataSource_tareas:tareasData,
+                totalHoras:horas
             })
             
               
@@ -472,7 +486,7 @@ export default class ObtenerPlanDeTrabajo extends Component{
                 <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
                   <div>
                     <Popconfirm title="¿Seguro de añadir una nueva tarea?" onConfirm={() => this.addTarea(record.id)}>
-                    <Button key="submit" type="primary"  icon="plus">
+                    <Button disabled={!this.state.planAprobado} key="submit" type="primary"  icon="plus">
                        
                       </Button>
                     </Popconfirm>
@@ -481,7 +495,7 @@ export default class ObtenerPlanDeTrabajo extends Component{
                 <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
                   <div>
                       <Popconfirm title="¿Seguro de editar la subactividad?" onConfirm={() => this.showEditSubactividad(record.id,record.actividad)}>
-                          <Button key="submit" type="primary"  icon="edit">
+                          <Button disabled={!this.state.planAprobado} key="submit" type="primary"  icon="edit">
                               
                             </Button>
                       </Popconfirm>
@@ -490,7 +504,7 @@ export default class ObtenerPlanDeTrabajo extends Component{
                 <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
                  <div>
                     <Popconfirm title="¿Seguro de eliminar?" onConfirm={() => this.deleteSubactividad(record.id,record.id_actividad_general,record.id_orden)}>
-                    <Button key="submit" type="primary" icon="delete" />
+                    <Button disabled={!this.state.planAprobado} key="submit" type="primary" icon="delete" />
                      
                     </Popconfirm>
                   </div>
@@ -509,11 +523,11 @@ export default class ObtenerPlanDeTrabajo extends Component{
                 
                    <ButtonGroup>
                             <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerSubactividad(record.id,record.id_actividad_general,record.id_orden,"subir")}>
-                              <Button type="primary" icon="up"/>
+                              <Button disabled={!this.state.planAprobado} type="primary" icon="up"/>
                             </Popconfirm>
 
                             <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerSubactividad(record.id,record.id_actividad_general,record.id_orden,"bajar")}>
-                            <Button type="primary" icon="down" />
+                            <Button disabled={!this.state.planAprobado} type="primary" icon="down" />
                             </Popconfirm>
                     </ButtonGroup>
               </Row>
@@ -586,14 +600,14 @@ export default class ObtenerPlanDeTrabajo extends Component{
               <Col span={12}>
                           
                        <Popconfirm title="¿Seguro de editar la tarea?" onConfirm={() =>this.showEditTarea(record.id,record.tarea,record.horas,record.entregable,record.fecha_entrega)}>
-                          <Button type="primary" icon="edit"/>
+                          <Button disabled={!this.state.planAprobado} type="primary" icon="edit"/>
                       </Popconfirm>
       
               </Col>
               <Col span={12}>
                <div>
                   <Popconfirm title="¿Seguro de eliminar?" onConfirm={() => this.deleteTarea(record.id,record.id_subactividad,record.id_orden)}>
-                  <Button key="submit" type="primary" icon="delete">
+                  <Button key="submit" disabled={!this.state.planAprobado} type="primary" icon="delete">
                      
                     </Button>
                   </Popconfirm>
@@ -613,11 +627,11 @@ export default class ObtenerPlanDeTrabajo extends Component{
             <Row>
                <ButtonGroup>
                   <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() =>this.recorrerTarea(record.id,record.id_subactividad,record.id_orden,"subir")}>
-                     <Button type="primary" icon="up"/>
+                     <Button  disabled={!this.state.planAprobado} type="primary" icon="up"/>
                   </Popconfirm>
 
                  <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerTarea(record.id,record.id_subactividad,record.id_orden,"bajar")}>
-                    <Button type="primary" icon="down" />
+                    <Button disabled={!this.state.planAprobado} type="primary" icon="down" />
                   </Popconfirm>
                </ButtonGroup>              
                 
@@ -1192,7 +1206,7 @@ handleCreateEditActividadGeneral = () => {
                           <div>
                               
                             <Popconfirm title="¿Seguro de añadir una nueva subactividad?" onConfirm={() => this.addSubactividad(record.id)}>
-                            <Button key="submit" type="primary" icon="plus" > 
+                            <Button disabled={!this.state.planAprobado} key="submit" type="primary" icon="plus" > 
                                 
                             </Button>
                             </Popconfirm>
@@ -1201,7 +1215,7 @@ handleCreateEditActividadGeneral = () => {
                         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
                             
                             <Popconfirm title="¿Seguro de editar actividad general?" onConfirm={() => this.showEditActividadGeneral(record.id,record.actividad,record.objetivo,record.entregable,record.id_proyecto)}>
-                            <Button type="primary" icon="edit" />
+                            <Button disabled={!this.state.planAprobado} type="primary" icon="edit" />
                             </Popconfirm>
                             
                             
@@ -1209,7 +1223,7 @@ handleCreateEditActividadGeneral = () => {
                         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
                           <div>
                             <Popconfirm title="¿Seguro de eliminar?" onConfirm={() => this.handleDeleteActividadGeneral(record.id,record.id_proyecto,record.id_orden)}>
-                            <Button key="submit" type="primary" icon="delete">
+                            <Button disabled={!this.state.planAprobado} key="submit" type="primary" icon="delete">
                                 
                               </Button>
                             </Popconfirm>
@@ -1228,11 +1242,11 @@ handleCreateEditActividadGeneral = () => {
                   <Row>
                          <ButtonGroup>
                             <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerActividadGeneral(record.id_proyecto,record.id,record.id_orden,"subir")}>
-                              <Button type="primary" icon="up"/>
+                              <Button disabled={!this.state.planAprobado} type="primary" icon="up"/>
                             </Popconfirm>
 
                             <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerActividadGeneral(record.id_proyecto,record.id,record.id_orden,"bajar")}>
-                            <Button type="primary" icon="down" />
+                            <Button disabled={!this.state.planAprobado} type="primary" icon="down" />
                             </Popconfirm>
                             
                          </ButtonGroup>
@@ -1266,8 +1280,9 @@ handleCreateEditActividadGeneral = () => {
         
         return (
          <div>
+           
         <Table
-               bordered title={() => 'Actividades generales del plan de trabajo'} 
+               bordered title={() => 'Actividades generales del plan de trabajo, total de horas: '+this.state.totalHoras}
                dataSource={dataSource_actividad_general} 
                className="full-width"
                columns={columns}
@@ -1275,13 +1290,13 @@ handleCreateEditActividadGeneral = () => {
                pagination={{ pageSize: 6 }} 
                 /> 
               <Col span={4}>
-                  <Button key="submit" type="primary" icon="plus" onClick={this.showAddActividadGenal}  > 
+                  <Button disabled={!this.state.planAprobado} key="submit" type="primary" icon="plus" onClick={this.showAddActividadGenal}  > 
                             Agregar actividad general        
                   </Button>
               </Col>
               <Col span={12}>
                   <Popover content={"Se podrá notificar al asesor interno una vez que todas las observaciones estén corregidas"} >
-                      <Button type="primary" onClick={this.statusPlanDeTrabajo} >
+                      <Button disabled={!this.state.planAprobado} type="primary" onClick={this.statusPlanDeTrabajo} >
                                 Notificar a asesor interno de observaciones corregidas 
                       </Button>
                   </Popover>

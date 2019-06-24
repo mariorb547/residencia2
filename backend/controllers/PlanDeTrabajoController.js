@@ -972,7 +972,7 @@ module.exports.updateEstadoTareaAddObservacionPlan = (req, res) => {
     const id = req.body.id_tarea;
              
                     tareas.update({
-                        estado_revision_plan:'no_aprobado'
+                        estado_revision_plan:'no aprobado'
                     },{where: {id}}).then((_observacion)=>{
                         // console.log('success=======>    ', result)
                         res.status(200).json(_observacion)
@@ -1150,6 +1150,7 @@ module.exports.generarPlanTrabajo = (req, res) => {
                     include:[{model:subactividades, as: 'subactividades',include:[{model:tareas, as: 'tareas' }]}]
                 }).then(_plan => {
                 pdfs.generarPlanDeTrabajo(_proyecto,_plan,res);
+                res.contentType("application/pdf");
                     
                 }).catch(err => {
                     console.log(err)
@@ -1178,6 +1179,7 @@ module.exports.getCronograma = (req, res) => {
                     include:[{model:subactividades, as: 'subactividades',include:[{model:tareas, as: 'tareas' }]}]
                 }).then(_plan => {
                 pdfs.generarCronograma(_proyecto,_plan,res);
+                res.contentType("application/pdf");
                     
                 }).catch(err => {
                     console.log(err)

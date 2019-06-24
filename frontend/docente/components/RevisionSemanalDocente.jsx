@@ -853,12 +853,14 @@ export default class RevisionSemanal extends Component{
                   ]}
                 >
                     <Row>
-                        <Col span={18}>
+                        <Col span={20}>
                             <iframe id="evidencia" style={{width:"100%",height:500}} src={`/api/revision_semanal/get_evidencia/${this.state.filename_evidencia}`}></iframe>
                         </Col>
-                        <Col span={6} >
-                            <Button disabled={disabledBtnAddObservacion} icon="plus" onClick={this.showAddObservacion}>Agregar observación</Button>
-                            <Button icon="eye" onClick={this.showObservacion}>Visualizar observaciones</Button>
+                        <Col span={4} >
+                            <Button type="primary" disabled={disabledBtnAddObservacion} icon="plus" onClick={this.showAddObservacion}>Agregar observación</Button>
+                            <br></br>
+                            <br></br>
+                            <Button type="primary" icon="eye" onClick={this.showObservacion}>Visualizar observaciones</Button>
                        
                         </Col>
                     </Row>

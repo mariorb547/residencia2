@@ -29,6 +29,12 @@ module.exports = {
       estado: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },estado_alumno: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },id_asesor_interno: {
+        type: Sequelize.INTEGER,
+        
       },
       createdAt: {
         allowNull: false,

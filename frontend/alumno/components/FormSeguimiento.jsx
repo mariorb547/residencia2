@@ -349,7 +349,7 @@ export default class RevisionSemanal extends Component{
     }
 
     showObservacionBadge = (id_tarea,tipo_observacion) => {
-        alert(id_tarea+"= "+tipo_observacion)
+   // alert(id_tarea+"= "+tipo_observacion)
         this.setState({
             id_tarea:id_tarea,
             tipo_observacion:tipo_observacion,
@@ -361,7 +361,7 @@ export default class RevisionSemanal extends Component{
     }
 
     showObservacion = (id_tarea,tipo_observacion) => {
-        alert(id_tarea+"= "+tipo_observacion)
+      //  alert(id_tarea+"= "+tipo_observacion)
         this.setState({
             id_tarea:id_tarea,
             tipo_observacion:tipo_observacion,

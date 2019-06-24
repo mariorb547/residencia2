@@ -11,15 +11,15 @@ input[type=mayuscula]
     text-transform: uppercase;
 }
 .ant-table-content-rojo {
-  background: rgb(255, 158, 129);
+  background: #FF1A1A;
 
  }
  .ant-table-content-verde {
-  background: rgb(152, 251, 152);
+  background: #00CC00;
 
  }
  .ant-table-content-gris {
-  background: rgb(188, 195, 202);
+  background: #979997;
 
  }
 .grises img {
@@ -91,5 +91,10 @@ input[type=mayuscula]
   font-size: 16;
   font-weight: bold;
   left: 80%;
+}
+ 
+.img-alumno:hover{
+  width:25%;
+  height:25%;
 }
  

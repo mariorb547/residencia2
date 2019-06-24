@@ -13,7 +13,8 @@ class FormPlanTrabajo extends Component{
         this.state = {
             showEvidencia:props.showEvidencia,
             ruta:props.ruta,
-            disabledAddEvidencia:props.disabledAddEvidencia
+            disabledAddEvidencia:props.disabledAddEvidencia,
+            fecha_entrega:props.fecha_entrega
             }
        
     }
@@ -37,7 +38,7 @@ class FormPlanTrabajo extends Component{
         return isPDF && isLt10M;
     }
     afterUpload(){
-        alert("ruta "+this.state.ruta)
+        //alert("ruta "+this.state.ruta)
         axios.get(this.state.ruta).then(res =>{
               return res.data
         })
@@ -71,12 +72,14 @@ class FormPlanTrabajo extends Component{
     
     onChange =()=>{
        
-        this.state.showEvidencia()
+     this.state.showEvidencia()
+     //alert("que hay")
     }
 
     // END FUNCTIONS UPLOAD FILE
     render(){
-      
+        let fecha_actual=moment().format('YYYY-MM-DD');
+        
         const {ruta} = this.props
         // console.log('aui', this.props)
         return (
@@ -90,7 +93,7 @@ class FormPlanTrabajo extends Component{
                                 action={ruta}
                                 accept=".pdf"
                                 beforeUpload={this.beforeUpload}
-                                disabled={this.state.disabledAddEvidencia!="aprobado"?false:true}
+                                disabled={this.state.disabledAddEvidencia!="aprobado" && this.state.fecha_entrega!=fecha_actual?false:this.state.disabledAddEvidencia=="no aprobado"?false:true}
                                 onChange={()=>this.onChange()}
                             >
                                 <Icon type="inbox"  style={{ fontSize: '50px', color: '#08c' }} />

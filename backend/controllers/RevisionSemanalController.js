@@ -355,6 +355,7 @@ module.exports.generarFormatoRevision = (req, res) => {
                             include:[{model:subactividades, as: 'subactividades',include:[{model:tareas, as: 'tareas',include:[{model:observaciones, as:'observaciones'}] }]}]
                         }).then(_plan => {
                         pdfs.generarFormatoRevisionSemanal(_proyecto,numero_semana,_plan,res);
+                        res.contentType("application/pdf");
                             
                         }).catch(err => {
                             console.log(err)

@@ -48,7 +48,7 @@ export default class SeguimientoProyecto extends Component{
                 })
             }
             
-        }else{alert("id seguimiento "+id_seguimiento)
+        }else{//alert("id seguimiento "+id_seguimiento)
 
             const _seguimiento = seguimientos.find(seg => seg[0].id==id_seguimiento)[0];
             axios.get(`/api/seguimientos/obtener_seguimientos/${this.state.proyecto.anteproyecto.id_periodo}`).then(res =>{
@@ -59,9 +59,9 @@ export default class SeguimientoProyecto extends Component{
                     res.data.map((seguimiento)=>{
                       
                         //se comparan los seguimientos para saber la posion del seguimiento selecionado
-                        alert("ide seguimiento: "+id_seguimiento+" id de seguimientos: "+seguimiento.id)
+                       // alert("ide seguimiento: "+id_seguimiento+" id de seguimientos: "+seguimiento.id)
                         if(_seguimiento.seguimiento.id==seguimiento.id){
-                            alert("entre ompracion "+contadorSeguimiento)
+                         //   alert("entre ompracion "+contadorSeguimiento)
                             numeroSeguimiento=contadorSeguimiento
                         }
                         contadorSeguimiento++

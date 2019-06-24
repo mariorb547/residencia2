@@ -121,7 +121,7 @@ export default class RevisionProyectoResidencia extends Component{
                         {proyectos.map((proyecto, index) => {
                             return (
                                 <Option  key={index} value={`${proyecto.id}`}> 
-                                        <Avatar alt="logo_tec" style={{ textAlign: 'center' }}  src={`data:image/[png|gif|jpg|jpeg]; base64,${this.URLFoto(proyecto.anteproyecto.alumno.usuario.id)}`}  />
+                                        <Avatar className="img-alumno" alt="logo_tec" style={{ textAlign: 'center' }}  src={`data:image/[png|gif|jpg|jpeg]; base64,${this.URLFoto(proyecto.anteproyecto.alumno.usuario.id)}`}  />
                                  {`${proyecto.anteproyecto.alumno.no_control} - ${proyecto.anteproyecto.alumno.nombre} ${proyecto.anteproyecto.alumno.ap_paterno} ${proyecto.anteproyecto.alumno.ap_materno}`}</Option>
                             )
                         })}
