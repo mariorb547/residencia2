@@ -65,7 +65,14 @@ export default class revisionAnteproyectos extends Component{
                 }
             })
     }
-
+    obtenerResidentes=()=>{
+        if(this.state.usuario.rol==="presidente_academia"){
+  alert("tamaño "+this.state.periodo.anteproyectos.length)
+        }
+            this.state.periodo.anteproyectos.map((anteproyecto, i) => {
+                return (<Option key={uuid.v1()} value={`${anteproyecto.id}`} >{` ${anteproyecto.alumno.no_control} - ${anteproyecto.alumno.nombre} ${anteproyecto.alumno.ap_paterno} ${anteproyecto.alumno.ap_materno}`}</Option>)
+            })
+    }
     render(){
         const {carreras, renderProyecto, periodo, spin} = this.state
         return (
@@ -100,9 +107,12 @@ export default class revisionAnteproyectos extends Component{
                         >
                             {
                                 periodo?
-                                    periodo.anteproyectos.map((anteproyecto, i) => {
-                                        return (<Option key={uuid.v1()} value={`${anteproyecto.id}`} >{` ${anteproyecto.alumno.no_control} - ${anteproyecto.alumno.nombre} ${anteproyecto.alumno.ap_paterno} ${anteproyecto.alumno.ap_materno}`}</Option>)
-                                    })
+                                this.state.usuario.rol==="presidente_academia"? 
+                                 periodo.anteproyectos.map((anteproyecto, i) => {
+                                    return (<Option key={uuid.v1()} value={`${anteproyecto.id}`} >{` ${anteproyecto.alumno.no_control} - ${anteproyecto.alumno.nombre} ${anteproyecto.alumno.ap_paterno} ${anteproyecto.alumno.ap_materno}`}</Option>)
+                                }):false
+
+                                  
                                 :
                                     null
                             }

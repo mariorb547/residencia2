@@ -10,7 +10,7 @@ const TabPane = Tabs.TabPane;
 import axios from 'axios';
 import moment from 'moment';
 import FormAddSubactividad from './FormAddSubactividad.jsx';
-
+import '../../styling.css';
 
 const CreateFormAddActividadGeneral = Form.create()(
     (props => {
@@ -40,7 +40,6 @@ const CreateFormAddActividadGeneral = Form.create()(
         }
 
 
-
         // console.warn(alumnos_rechazados)
         return (
             <Modal
@@ -59,9 +58,9 @@ const CreateFormAddActividadGeneral = Form.create()(
                         <Col span={20}>
                             <FormItem label="Actividad general">
                                 {getFieldDecorator('actividad', {
-                                    rules: [{ required: true, message: 'Actividad principal es obligatoria.' }]
+                                    rules: [{ required: true,message: 'La actividad principal es requerida.' },{pattern: new RegExp("^[A-Z].*"),message: 'La actividad principal debe iniciar con una letra mayúscula' }]
                                 })(
-                                    <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Actividad general" />
+                                    <Input  prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Actividad general" />
                                 )
                                 }
                             </FormItem>
@@ -70,7 +69,7 @@ const CreateFormAddActividadGeneral = Form.create()(
                         <Col span={20}>
                             <FormItem label="Objetivo">
                                 {getFieldDecorator('objetivo', {
-                                    rules: [{ required: true, message: 'Objetivo es obligatorio.' }]
+                                    rules: [{ required: true, message: 'El objetivo es requerido.' },{ pattern: new RegExp("^[A-Z].*"),message: 'El objetivo debe iniciar con una letra mayúscula.'}]
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Objetivo" />
                                 )
@@ -80,7 +79,7 @@ const CreateFormAddActividadGeneral = Form.create()(
                         <Col span={20}>
                             <FormItem label="Entregable">
                                 {getFieldDecorator('entregable', {
-                                    rules: [{ required: true, message: 'Entregable es obligatorio.' }]
+                                    rules: [{ required: true, message: 'El entregable es requerido.' },{pattern: new RegExp("^[A-Z].*"), message: 'El entregable debe iniciar con una letra mayúscula.'}]
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Entregable" />
                                 )
@@ -109,7 +108,8 @@ export default class FormAddActividadGeneral extends Component {
             visible: props.visible,
             proyeproyectoActividadGeneral: props.proyectoActividadGeneral,
             visibleRegistrarSubactividad: props.visibleRegistrarSubactividad,
-            obtenerSubactividades: props.obtenerSubactividades
+            obtenerSubactividades: props.obtenerSubactividades,
+            hideAddActividadGenal:props.hideAddActividadGenal
         }
     }
 
@@ -117,7 +117,9 @@ export default class FormAddActividadGeneral extends Component {
         const { visible, proyectoActividadGeneral, visibleRegistrarSubactividad } = nextProps;
         this.setState({
             visible,
-            proyectoActividadGeneral, visibleRegistrarSubactividad
+            proyectoActividadGeneral,
+             visibleRegistrarSubactividad,
+            
         })
     }
 
@@ -152,9 +154,9 @@ export default class FormAddActividadGeneral extends Component {
             // crear post al servidor
             axios.post('/api/plan_de_trabajo/actividad_general', {
                 id_proyecto: proyectoActividadGeneral.id,
-                actividad: values.actividad,
-                objetivo: values.objetivo,
-                entregable: values.entregable
+                actividad: this.maysPrimera(values.actividad),
+                objetivo: this.maysPrimera(values.objetivo),
+                entregable: this.maysPrimera(values.entregable)
             }).then((res) => {
                 // console.log(res)
                 if (res.status === 200) {
@@ -163,7 +165,7 @@ export default class FormAddActividadGeneral extends Component {
                     form.resetFields();
                     this.showAddSubactividad();
                     // this.props.updateAsesorias();
-
+                     
                 } else {
                     Modal.error({
                         title: 'Error al registrar actividad general. Revisar los siguientes campos',
@@ -183,6 +185,9 @@ export default class FormAddActividadGeneral extends Component {
         this.form = form;
     }
 
+    maysPrimera = (dato) => {
+        return dato.charAt(0).toUpperCase() + dato.slice(1);
+    }
     render() {
         // console.warn(this.state.proyecto)
         const { visibleRegistrarSubactividad, proyectoActividadGeneral } = this.state;
@@ -196,7 +201,7 @@ export default class FormAddActividadGeneral extends Component {
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                 />
-                <FormAddSubactividad visible1={visibleRegistrarSubactividad} obtenerSubactividades={this.state.obtenerSubactividades} proyecto={proyectoActividadGeneral} />
+                <FormAddSubactividad visible1={visibleRegistrarSubactividad} obtenerSubactividades={this.state.obtenerSubactividades} proyecto={proyectoActividadGeneral} hideAddActividadGenal={this.state.hideAddActividadGenal} />
 
             </div>
         )

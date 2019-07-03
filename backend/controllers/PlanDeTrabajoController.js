@@ -490,7 +490,7 @@ module.exports.upActividadGeneral= (req,res) => {
             }).then(_actividad_general=> {
                 //si existe una actividad general antes de la actividad general selecionada se realiza el proceso
                 if(_actividad_general!=null) {   
-                    console.log("actividad jajajaj " +_actividad_general.id)
+                
                     actividades_generales.update({
                         id_orden:id_orden
                     },{where: {id:_actividad_general.id}}).then((_observacion)=>{
@@ -503,7 +503,7 @@ module.exports.upActividadGeneral= (req,res) => {
                     })
                     
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden+100 where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+_actividad_general.id)
+                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden+100,fecha_entrega="0000-00-00" where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+_actividad_general.id)
                     .then(projects => {})
 
                     }).catch(Sequelize.ValidationError, (err) => {
@@ -529,7 +529,7 @@ module.exports.upActividadGeneral= (req,res) => {
                     })
 
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden-100 where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+id_actividad_general)
+                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden-100,fecha_entrega="0000-00-00" where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+id_actividad_general)
                     .then(projects => {})
                         
                     }).catch(Sequelize.ValidationError, (err) => {
@@ -571,7 +571,7 @@ module.exports.upActividadGeneral= (req,res) => {
                         
                     })
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden-100 where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+_actividad_general.id)
+                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden-100,fecha_entrega="0000-00-00" where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+_actividad_general.id)
                     .then(projects => {})
                     
                     }).catch(Sequelize.ValidationError, (err) => {
@@ -594,7 +594,7 @@ module.exports.upActividadGeneral= (req,res) => {
                         
                     })
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden+100 where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+id_actividad_general
+                    sequelize.query('update  tareas join subactividades on tareas.id_subactividad=subactividades.id join actividades_generales on subactividades.id_actividad_general=actividades_generales.id set tareas.id_orden=tareas.id_orden+100,fecha_entrega="0000-00-00" where actividades_generales.id_proyecto='+id_proyecto+" and actividades_generales.id="+id_actividad_general
                     )
                     .then(projects => {})
                         // console.log('success=======>    ', result)
@@ -641,7 +641,7 @@ module.exports.recorrerSubactividad= (req,res) => {
             }).then(_subactividad=> {
                 //si la existe una subactividad antes de la posicion de la subactividad seleciona entra    
                 if(_subactividad!=null){
-                        console.log("actividad jajajaj " +_subactividad.id)
+                       
                         subactividades.update({
                             id_orden:id_orden
                         },{where: {id:_subactividad.id}}).then((_observacion)=>{
@@ -649,7 +649,7 @@ module.exports.recorrerSubactividad= (req,res) => {
                         // res.status(200).json(_observacion)
                         
                         //se actuaiza el id_orden las tareas
-                        sequelize.query('update  tareas set id_orden=id_orden+10 where id_subactividad='+_subactividad.id)
+                        sequelize.query('update  tareas set id_orden=id_orden+10,fecha_entrega="0000-00-00" where id_subactividad='+_subactividad.id)
                         .then(projects => {})
 
                         }).catch(Sequelize.ValidationError, (err) => {
@@ -670,7 +670,7 @@ module.exports.recorrerSubactividad= (req,res) => {
                         
 
                         //se actuaiza el id_orden las tareas
-                        sequelize.query('update  tareas  set id_orden=id_orden-10 where id_subactividad='+id_subactividad)
+                        sequelize.query('update  tareas  set id_orden=id_orden-10,fecha_entrega="0000-00-00" where id_subactividad='+id_subactividad)
                         .then(projects => {})
                             
                         }).catch(Sequelize.ValidationError, (err) => {
@@ -702,7 +702,7 @@ module.exports.recorrerSubactividad= (req,res) => {
             }).then(_subactividad=> {
                 //si la existe una subactividad despues de la posicion de la subactividad seleciona entra    
                 if(_subactividad!=null)  { 
-                    console.log("actividad jajajaj " +_subactividad.id)
+                   
                     subactividades.update({
                         id_orden:id_orden
                     },{where: {id:_subactividad.id}}).then((_observacion)=>{
@@ -710,7 +710,7 @@ module.exports.recorrerSubactividad= (req,res) => {
                     // res.status(200).json(_observacion)
                     
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas set id_orden=id_orden-10 where id_subactividad='+_subactividad.id)
+                    sequelize.query('update  tareas set id_orden=id_orden-10,fecha_entrega="0000-00-00" where id_subactividad='+_subactividad.id)
                     .then(projects => {})
 
                     }).catch(Sequelize.ValidationError, (err) => {
@@ -731,7 +731,7 @@ module.exports.recorrerSubactividad= (req,res) => {
                     
 
                     //se actuaiza el id_orden las tareas
-                    sequelize.query('update  tareas  set id_orden=id_orden+10 where id_subactividad='+id_subactividad)
+                    sequelize.query('update  tareas  set id_orden=id_orden+10,fecha_entrega="0000-00-00" where id_subactividad='+id_subactividad)
                     .then(projects => {})
                         
                     }).catch(Sequelize.ValidationError, (err) => {
@@ -766,7 +766,8 @@ module.exports.recorrerTarea= (req,res) => {
     const id_tarea=req.body.id_tarea
     id_subactividad=req.body.id_subactividad,
     id_orden=req.body.id_orden,
-    tipo=req.body.tipo;
+    tipo=req.body.tipo,
+    fecha_entrega=req.body.fecha_entrega;
 
    if( tipo==="subir" ){
             id_orden_buscar=id_orden-1;
@@ -779,7 +780,7 @@ module.exports.recorrerTarea= (req,res) => {
                 if(_tarea!=null){
                         //a la tarea encontrada se re lealiza el update del orden id_orden
                         tareas.update({
-                            id_orden:id_orden
+                            id_orden:id_orden,fecha_entrega
                         },{where: {id:_tarea.id}}).then((_observacion)=>{
                             // console.log('success=======>    ', result)
                         // res.status(200).json(_observacion)
@@ -797,7 +798,7 @@ module.exports.recorrerTarea= (req,res) => {
                         
                         //se cambia el id_orden con el id_orden de la tarea que esta arriba de ella
                         tareas.update({
-                            id_orden:_tarea.id_orden
+                            id_orden:_tarea.id_orden,fecha_entrega:_tarea.fecha_entrega
                         },{where: {id:id_tarea}}).then((_observacion)=>{
                         
 
@@ -837,7 +838,7 @@ module.exports.recorrerTarea= (req,res) => {
                 
                 //se  modifica la tarea encontrada con el id_orden de la tarea seleccionda
                  tareas.update({
-                    id_orden:id_orden
+                    id_orden:id_orden,fecha_entrega
                 },{where: {id:_tarea.id}}).then((_observacion)=>{
                     // console.log('success=======>    ', result)
                 // res.status(200).json(_observacion)
@@ -855,7 +856,7 @@ module.exports.recorrerTarea= (req,res) => {
                 
                 //se cambia la tarea selecionada con el id_orden de la tarea que esta sespues de ella
                 tareas.update({
-                    id_orden:_tarea.id_orden
+                    id_orden:_tarea.id_orden,fecha_entrega:_tarea.fecha_entrega
                 },{where: {id:id_tarea}}).then((_observacion)=>{
                   
 

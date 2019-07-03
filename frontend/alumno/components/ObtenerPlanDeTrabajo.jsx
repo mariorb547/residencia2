@@ -112,6 +112,11 @@ export default class ObtenerPlanDeTrabajo extends Component {
     })
   }
 
+  hideAddActividadGenal =()=>{
+    this.setState({
+      visibleRegistrarActividadGeneral: false
+    })
+  }
   obtenerActividadesGenerales = () => {
     let data_actividad_general = []
     let subData = []
@@ -460,6 +465,12 @@ export default class ObtenerPlanDeTrabajo extends Component {
                }) 
              
   }*/
+  warning = (tipoRecorrido) => {
+    Modal.warning({
+      title: 'Revisa las ' + tipoRecorrido + " que se han cambiado de posición",
+      content: 'Actualiza las fechas de entrega se han modificado a formato 0000-00-00',
+    });
+  }
 
 
   onInputChange = (e) => {
@@ -630,11 +641,11 @@ export default class ObtenerPlanDeTrabajo extends Component {
             ? (
               <Row>
                 <ButtonGroup>
-                  <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerTarea(record.id, record.id_subactividad, record.id_orden, "subir")}>
+                  <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerTarea(record.id, record.id_subactividad, record.id_orden, "subir", record.fecha_entrega)}>
                     <Button disabled={!this.state.planAprobado} type="primary" icon="up" />
                   </Popconfirm>
 
-                  <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerTarea(record.id, record.id_subactividad, record.id_orden, "bajar")}>
+                  <Popconfirm title="¿Seguro de recorrer de posición?" onConfirm={() => this.recorrerTarea(record.id, record.id_subactividad, record.id_orden, "bajar", record.fecha_entrega)}>
                     <Button disabled={!this.state.planAprobado} type="primary" icon="down" />
                   </Popconfirm>
                 </ButtonGroup>
@@ -806,7 +817,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
         message.success("Recorrido de posición finalizado ")
 
         this.obtenerActividadesGenerales()
-
+        this.warning("actividades generales")
 
       } else {
         message.error("EL recorrido de posición no se puede realizar ")
@@ -834,7 +845,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
       if (res.status === 200) {
         message.success("Recorrido de posición finalizado ")
         this.obtenerSubactividades()
-
+        this.warning("subactividades")
       } else {
         message.error("EL recorrido de posición no se puede realizar ")
       }
@@ -848,13 +859,14 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
 
   //recorre  una tarea
-  recorrerTarea = (id_tarea, id_subactividad, id_orden, tipo) => {
+  recorrerTarea = (id_tarea, id_subactividad, id_orden, tipo, fecha_entrega) => {
     this.reset()//ocultar los modales
     axios.post('/api/plan_de_trabajo/recorrer_tarea', {
       id_tarea: id_tarea,
       id_subactividad: id_subactividad,
       id_orden: id_orden,
-      tipo: tipo
+      tipo: tipo,
+      fecha_entrega: fecha_entrega
     }).then((res) => {
       // console.log(res)
       if (res.status === 200) {
@@ -1289,32 +1301,35 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
     return (
       <div>
+        <Col xs={24} lg={24}>
+          <Table
+            bordered title={() => 'Actividades generales del plan de trabajo, total de horas: ' + this.state.totalHoras}
+            dataSource={dataSource_actividad_general}
+            className="full-width"
+            columns={columns}
+            expandedRowRender={record => this.expandedRowRenderSubactividades(record.id)}
+            pagination={{ pageSize: 6 }}
+            scroll={{ x: 1000 }}
+          />
+        </Col>
 
-        <Table
-          bordered title={() => 'Actividades generales del plan de trabajo, total de horas: ' + this.state.totalHoras}
-          dataSource={dataSource_actividad_general}
-          className="full-width"
-          columns={columns}
-          expandedRowRender={record => this.expandedRowRenderSubactividades(record.id)}
-          pagination={{ pageSize: 6 }}
-        />
         <Col span={4}>
           <Button disabled={!this.state.planAprobado} key="submit" type="primary" icon="plus" onClick={this.showAddActividadGenal}  >
             Agregar actividad general
-                  </Button>
+          </Button>
         </Col>
         <Col span={12}>
           <Popover content={"Se podrá notificar al asesor interno una vez que todas las observaciones estén corregidas"} >
             <Button disabled={!this.state.planAprobado} type="primary" onClick={this.statusPlanDeTrabajo} >
               Notificar a asesor interno de observaciones corregidas
-                      </Button>
+            </Button>
           </Popover>
         </Col>
         <FormAddSubactividad visible1={this.state.visibleRegistrarSubactividad} obtenerSubactividades={this.obtenerSubactividades} proyecto={this.state.actividad_general} />
 
         <FormAgregarTarea visibleTarea={this.state.visibleRegistrarTarea} obtenerTareas={this.obtenerTareas} subactividad={this.state.subactividad} />
         <FormShowObservacion visible={this.state.visibleShowObservacion} tipo={this.state.tipo_observacion} id_tarea={this.state.id_actividad} ocultarShowObservacion={this.ocultarShowObservacion} />
-        <FormAddActividadGeneral visible={this.state.visibleRegistrarActividadGeneral} obtenerSubactividades={this.obtenerActividadesGenerales} proyectoActividadGeneral={this.state.proyecto} visibleRegistrarSubactividad={false} />
+        <FormAddActividadGeneral visible={this.state.visibleRegistrarActividadGeneral} obtenerSubactividades={this.obtenerActividadesGenerales} proyectoActividadGeneral={this.state.proyecto} visibleRegistrarSubactividad={false} hideAddActividadGenal={this.hideAddActividadGenal} />
 
         <CreateFormEditActividadGeneral
           ref={this.saveFormRefActividadGeneral}
@@ -1355,7 +1370,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
 }
 
 //de aqui hacia abajo es para editar 
-
+//edicion de actividad general
 const CreateFormEditActividadGeneral = Form.create()(
   (props => {
     const { visible, onCancel, onCreate, form, actividad, objetivo, entregable } = props;
@@ -1378,7 +1393,7 @@ const CreateFormEditActividadGeneral = Form.create()(
             <Col span={20}>
               <FormItem label="Actividad general">
                 {getFieldDecorator('actividad', {
-                  rules: [{ required: true, message: 'Actividad principal es obligatoria.' }],
+                  rules: [{ required: true, message: 'Actividad principal es obligatoria.' }, { pattern: new RegExp("^[A-Z].*"), message: 'Actividad general debe iniciar con una letra mayúscula.' }],
                   initialValue: actividad
                 })(
                   <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Actividad Principal" />
@@ -1390,7 +1405,7 @@ const CreateFormEditActividadGeneral = Form.create()(
             <Col span={20}>
               <FormItem label="Objetivo">
                 {getFieldDecorator('objetivo', {
-                  rules: [{ required: true, message: 'Objetivo es obligatorio.' }],
+                  rules: [{ required: true, message: 'Objetivo es obligatorio.' }, { pattern: new RegExp("^[A-Z].*"), message: 'Objetivo debe iniciar con una letra mayúscula.' }],
                   initialValue: objetivo
                 })(
                   <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Objetivo" />
@@ -1401,7 +1416,7 @@ const CreateFormEditActividadGeneral = Form.create()(
             <Col span={20}>
               <FormItem label="Entregable">
                 {getFieldDecorator('entregable', {
-                  rules: [{ required: true, message: 'Entregable es obligatorio.' }],
+                  rules: [{ required: true, message: 'Entregable es obligatorio.' }, { pattern: new RegExp("^[A-Z].*"), message: 'Entregable debe iniciar con una letra mayúscula.' }],
                   initialValue: entregable
                 })(
                   <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Entregable" />
@@ -1418,7 +1433,7 @@ const CreateFormEditActividadGeneral = Form.create()(
 )
 
 
-
+//edicion de subactividad
 const CreateFormEditSubactividad = Form.create()(
   (props => {
     const { visible, onCancel, onCreate, form, actividad } = props;
@@ -1443,7 +1458,7 @@ const CreateFormEditSubactividad = Form.create()(
             <Col span={20}>
               <FormItem label="Actividad ">
                 {getFieldDecorator('subactividad', {
-                  rules: [{ required: true, message: 'Actividad  es obligatoria.' }],
+                  rules: [{ required: true, message: 'Subactividad  es obligatoria.' }, { pattern: new RegExp("^[A-Z].*"), message: 'Subactividad debe iniciar con una letra mayúscula.' }],
                   initialValue: actividad
                 })(
                   <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Subactividad" />
@@ -1461,7 +1476,7 @@ const CreateFormEditSubactividad = Form.create()(
   })
 )
 
-
+//edicion de tarea
 const CreateFormEditTarea = Form.create()(
   (props => {
     const { visible, onCancel, onCreate, form, tarea, entregable, horas, fecha_entrega } = props;
@@ -1489,7 +1504,7 @@ const CreateFormEditTarea = Form.create()(
             <Col span={20}>
               <FormItem label="Tarea">
                 {getFieldDecorator('tarea', {
-                  rules: [{ required: true, message: 'Tarea es obligatoria..' }, { min: 5, message: 'El minimo de caracteres es 5.' }, { max: 500, message: 'El maximo de caracteres es 500.' }],
+                  rules: [{ required: true, message: 'Tarea es obligatoria..' }, { pattern: new RegExp("^[A-Z].*"), message: 'Tarea debe iniciar con una letra mayúscula.' }],
                   initialValue: tarea
                 })(
                   <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Tarea" />
@@ -1513,7 +1528,7 @@ const CreateFormEditTarea = Form.create()(
             <Col span={20}>
               <FormItem label="Entregable">
                 {getFieldDecorator('entregable', {
-                  rules: [{ required: true, message: 'Entregable es obligatoria..' }, { min: 5, message: 'El minimo de caracteres es 5.' }, { max: 400, message: 'El maximo de caracteres es 400.' }],
+                  rules: [{ required: true, message: 'Entregable es obligatoria..' }, { pattern: new RegExp("^[A-Z].*"), message: 'Entregable debe iniciar con una letra mayúscula.' }],
                   initialValue: entregable
 
                 })(

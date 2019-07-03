@@ -48,7 +48,7 @@ const CreateFormAddSubactividad = Form.create()(
                         <Col span={20}>
                             <FormItem label="Subactividad">
                                 {getFieldDecorator('subactividad', {
-                                    rules: [{ required: true, message: 'Subactividad es obligatoria.' }]
+                                    rules: [{ required: true, message: 'La subactividad es requerida.' },{pattern: new RegExp("^[A-Z].*"), message: 'La subactividad debe iniciar con una letra mayúscula.'}]
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Subactividad" />
                                 )
@@ -96,7 +96,7 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Tarea">
                                 {getFieldDecorator('tarea', {
-                                    rules: [{ required: true, message: 'Tarea es obligatoria..' }, { min: 5, message: 'El minimo de caracteres es 5.' }, { max: 500, message: 'El maximo de caracteres es 500.' }]
+                                    rules: [{ required: true, message: 'La tarea es requira.' },{ pattern: new RegExp("^[A-Z].*"), message: 'La tarea debe iniciar con una letra mayúscula.' }]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Tarea" />
@@ -107,10 +107,10 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Horas">
                                 {getFieldDecorator('horas', {
-                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 0, valuePropName: 'option'
+                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 1, 
 
                                 })(
-                                    <InputNumber min={1} max={60} defaultValue={1} onChange={onChange} />
+                                    <InputNumber id="horas" min={1} max={60} onChange={onChange} />
                                 )
                                 }
                             </FormItem>
@@ -118,7 +118,7 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Entregable">
                                 {getFieldDecorator('entregable', {
-                                    rules: [{ required: true, message: 'Entregable es obligatoria..' }, { min: 5, message: 'El minimo de caracteres es 5.' }, { max: 400, message: 'El maximo de caracteres es 400.' }]
+                                    rules: [{ required: true, message: 'Entregable es obligatoria.' }, {pattern: new RegExp("^[A-Z].*"),message: 'El entregable debe iniciar con una letra mayúscula.'}]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Entregable" />
@@ -161,18 +161,20 @@ export default class FormAddSubactividad extends Component {
             proyecto: props.proyecto,
             visibleRegistrarTarea: props.visibleRegistrarTarea,
             visibleTarea: false,
-            obtenerSubactividades: props.obtenerSubactividades
+            obtenerSubactividades: props.obtenerSubactividades,
+            hideAddActividadGenal:props.hideAddActividadGenal
 
 
         }
 
     }
     componentWillReceiveProps(nextProps) {
-        const { visible1, proyecto, visibleRegistrarTarea } = nextProps;
+        const { visible1, proyecto, visibleRegistrarTarea,hideAddActividadGenal } = nextProps;
         this.setState({
             visible1,
             proyecto,
-            visibleRegistrarTarea
+            visibleRegistrarTarea,
+            hideAddActividadGenal
         })
     }
 
@@ -190,12 +192,14 @@ export default class FormAddSubactividad extends Component {
         const form = this.form;
         form.resetFields();
         this.setState({ visible1: false, visibleTarea: false });
+        this.state.hideAddActividadGenal()
 
     }
     handleCancelTarea = () => {
         const form = this.form;
         form.resetFields();
         this.setState({ visibleTarea: false, visible1: false });
+        this.state.hideAddActividadGenal()
 
     }
     handleCreate = () => {
@@ -225,7 +229,7 @@ export default class FormAddSubactividad extends Component {
             // crear post al servidor
             axios.post('/api/plan_de_trabajo/addSubactividad', {
                 id_proyecto: id_actividad_general,
-                actividad: values.subactividad,
+                actividad: this.maysPrimera(values.subactividad),
                 tipo: tipo
             }).then((res) => {
                 // console.log(res)
@@ -255,8 +259,8 @@ export default class FormAddSubactividad extends Component {
     handleCreateTarea = () => {
 
         const { proyecto } = this.state
-        const form = this.formTarea;
-        form.validateFields((err, values) => {
+        const form1 = this.formTarea;
+        form1.validateFields((err, values) => {
             if (err) {
                 return;
             }
@@ -274,22 +278,23 @@ export default class FormAddSubactividad extends Component {
 
             }
 
-            console.log("Tarea " + values.tarea + values.horas, values.entregable + values.fecha_entrega)
-            // crear post al servidor
+             // crear post al servidor
             axios.post('/api/plan_de_trabajo/addTarea', {
                 id_proyecto: id_actividad_general,
                 tipo: tipo,
-                tarea: values.tarea,
+                tarea:this.maysPrimera(values.tarea),
                 horas: values.horas,
-                entregable: values.entregable,
+                entregable: this.maysPrimera(values.entregable),
                 fecha_entrega: values.fecha_entrega
             }).then((res) => {
                 // console.log(res)
                 if (res.status === 200) {
                     message.success("Tarea registrada satisfactoriamente")
 
-                    form.resetFields();
-
+                    form1.resetFields();
+                     
+               
+                document.getElementById("horas").defaultValue=1;
                     this.props.obtenerSubactividades()
                 } else {
                     Modal.error({
@@ -324,6 +329,9 @@ export default class FormAddSubactividad extends Component {
 
     }
 
+    maysPrimera=(dato)=>{
+        return dato.charAt(0).toUpperCase() + dato.slice(1);
+      }
     render() {
         const { visibleRegistrarTarea, proyecto } = this.state
 

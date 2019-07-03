@@ -48,6 +48,13 @@ export default class ProyectoDeResidencia extends Component {
         })
     }
 
+    hideAddActividadGenal=()=>{
+        this.setState({
+            visibleRegistrarActividadGeneral: false,
+           
+        })
+    }
+
     showPlanDeTrabajo = () => {
         this.setState({
             visiblePlanDeTrabajo: true,
@@ -135,28 +142,29 @@ export default class ProyectoDeResidencia extends Component {
                 <Row className="border-top">
                     <Col xs={24} lg={24}>
                         <p style={{ marginBottom: 20 }}>Plan de trabajo</p>
-                        <Col xs={24} lg={4}>
+                        <Col xs={24} lg={4} style={{padding:2}} >
                             <a style={{ color: '#4da1ff' }} href="/plantillas/plan_de_trabajo.docx">Plantilla de plan de trabajo <Icon type="cloud-download" /></a>
                         </Col>
-                        <Col xs={24} lg={4}>
+                        
+                        <Col xs={24} lg={4} style={{padding:2}}>
                             <Button icon="plus" disabled={!this.state.disabledDescargarPlan} type="primary" onClick={this.showAddActividadGeneral}>Registrar plan de trabajo</Button>
                         </Col>
-                        <Col xs={24} lg={4}>
+                        <Col xs={24} lg={4} style={{padding:2}}>
                             <Button icon="eye" type="primary" onClick={this.showPlanDeTrabajo}>Visulizar plan de trabajo</Button>
                         </Col>
-                        <Col xs={24} lg={4}>
+                        <Col xs={24} lg={4} style={{padding:2}}>
                             <a href={`/api/plan_de_trabajo/${this.state.proyecto.id}/generar_plan_de_trabajo`} target="_blank"><Button icon="file-pdf" disabled={this.state.disabledDescargarPlan} type="primary">Descargar plan de trabajo</Button></a>
                         </Col>
-                        <Col xs={24} lg={4}>
+                        <Col xs={24} lg={4} style={{padding:2}}>
 
                             <Popover content={content} >
                                 <Button icon="upload" type="primary" disabled={this.state.disabledDescargarPlan} onClick={this.visibleAdjuntarPlan}>Adjuntar plan de trabajo</Button>
                             </Popover>
                         </Col>
                     </Col>
-
-
+    
                 </Row>
+               
                 <Row className="border-top">
 
                     <Col xs={24} lg={24}>
@@ -172,7 +180,7 @@ export default class ProyectoDeResidencia extends Component {
                         <a style={{ color: '#C22121' }} href={`/api/solicitud/${proyecto.anteproyecto.id_alumno}/oficio_prorroga.docx`} target="_blank"> Oficio de prorroga <Icon type="file-word" style={{ color: '#4da1ff' }} /></a>
                     </Item>
                 </Row>
-                <FormAddActividadGeneral obtenerSubactividades={this.obtenerSubactividades} visible={visibleRegistrarActividadGeneral} proyectoActividadGeneral={proyecto} visibleRegistrarSubactividad={false} />
+                <FormAddActividadGeneral obtenerSubactividades={this.obtenerSubactividades} visible={visibleRegistrarActividadGeneral} proyectoActividadGeneral={proyecto} visibleRegistrarSubactividad={false} hideAddActividadGenal={this.hideAddActividadGenal} />
                 <FormPlanDeTrabajo visible={visiblePlanDeTrabajo} proyectoActividadGeneral={proyecto} visibleRegistrarSubactividad={false} />
                 <div>
                     <Modal

@@ -127,8 +127,7 @@ export default class Proyecto extends Component {
                     }
                 })
 
-                alert("id alumno : "+this.state.usuario.id_alumno+" proyecto id "+this.state.proyecto.id+" id_periodo "+this.state.proyecto.anteproyecto.id_periodo)
-                axios.put(`/api/proyecto/seguimientos`, {
+                 axios.put(`/api/proyecto/seguimientos`, {
                     id_proyecto: this.state.proyecto.id,
                     id_periodo: this.state.proyecto.anteproyecto.id_periodo
                 }).then(res => {
@@ -515,7 +514,7 @@ export default class Proyecto extends Component {
                         <Row className="border-top">
                             <Col xs={24} lg={6} >
                             
-                             <Button type="primary" onClick={this.showPlan}>Plan de trabajo</Button>
+                             <Button icon="eye" type="primary" onClick={this.showPlan}>Plan de trabajo</Button>
 
                                 
                             </Col>
