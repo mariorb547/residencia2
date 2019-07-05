@@ -163,11 +163,11 @@ export default class RegistrarAnteproyecto extends Component {
         }).then((res) => {
 
             if (res.status === 200) {
-               if(res.data ==='agotados'){
-                 this.setState({
-                     agotado:true,
-                 })
-               }
+                if (res.data === 'agotados') {
+                    this.setState({
+                        agotado: true,
+                    })
+                }
 
 
 
@@ -307,7 +307,7 @@ export default class RegistrarAnteproyecto extends Component {
         });
     }
     render() {
-        const { anteproyecto, empresas, visibleColaborador, id_alumnoC, colaboraciones} = this.state
+        const { anteproyecto, empresas, visibleColaborador, id_alumnoC, colaboraciones } = this.state
         const customPanelStyle = {
             background: '#f4f8f9',
             borderRadius: 10,
@@ -383,7 +383,7 @@ export default class RegistrarAnteproyecto extends Component {
                                                     <Button icon="file-pdf"><a href={`/api/alumno/${anteproyecto.id_alumno}/portada_proyecto`} target="_blank">Genera</a></Button> :
 
 
-                                                   <Button icon="file-pdf"><a href={`/api/alumno/${anteproyecto.id_alumno}/CartaPresentacion`} target="_blank">Genera</a></Button>
+                                                    <Button icon="file-pdf"><a href={`/api/alumno/${anteproyecto.id_alumno}/CartaPresentacion`} target="_blank">Genera</a></Button>
 
 
                                             )}
@@ -397,7 +397,7 @@ export default class RegistrarAnteproyecto extends Component {
                                                     <Button icon="file-word"><a href={`/api/alumno/${anteproyecto.id_alumno}/portada_proyecto.docx`} target="_blank">Descargar</a></Button> :
 
 
-                                                   <Button icon="file-word"><a href={`/api/alumno/${anteproyecto.id_alumno}/CartaPresentacion.docx`} target="_blank">Descargar</a></Button>
+                                                    <Button icon="file-word"><a href={`/api/alumno/${anteproyecto.id_alumno}/CartaPresentacion.docx`} target="_blank">Descargar</a></Button>
 
 
                                             )}

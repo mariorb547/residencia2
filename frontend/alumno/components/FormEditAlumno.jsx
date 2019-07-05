@@ -25,7 +25,7 @@ const CreateFormAddAlumno = Form.create()(
                 <Option value="6">INBURSA</Option>
                 <Option value="7">OTRO</Option>
             </Select>
-            );
+        );
         return (
             <Modal
                 visible={visible}
@@ -140,12 +140,12 @@ const CreateFormAddAlumno = Form.create()(
                                             rules: [{ required: true, message: 'Ingrese el número de telefono celular del alumno.' }]
                                         })(
                                             <Input prefix={<Icon type="phone" style={{ fontSize: 13 }} />} placeholder="Ingrese el número de telefono celular del alumno" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
                         </Form>
-//
+                    //
                     </TabPane>
                     {/* <TabPane tab={<span><Icon type="usergroup-delete" />Candidato a residente rechazado</span>} key="2">
                         <Timeline style={{ marginLeft: 10 }}>
@@ -192,13 +192,13 @@ export default class FormAddAlumno extends Component {
         });
     }
     cerrar = () => {
-        this.setState({visible: false});
-      axios.get('/api/usuario/logout').then(res=>{
-         if(res.status ==200){
-            
-            window.location.reload();
-         }
-      });
+        this.setState({ visible: false });
+        axios.get('/api/usuario/logout').then(res => {
+            if (res.status == 200) {
+
+                window.location.reload();
+            }
+        });
     }
     handleCancel = () => {
         this.setState({ visible: true });

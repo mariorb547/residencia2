@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import { Button, Modal, Form, Input, Radio,Select, Icon, message, Tabs, Timeline, Tooltip, DatePicker, AutoComplete} from 'antd';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Button, Modal, Form, Input, Radio, Select, Icon, message, Tabs, Timeline, Tooltip, DatePicker, AutoComplete } from 'antd';
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -13,10 +13,10 @@ import moment from 'moment';
 
 const CreateFormAddTarea = Form.create()(
     (props => {
-        const { visible, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo} = props;
-        const { getFieldDecorator} = form;
+        const { visible, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo } = props;
+        const { getFieldDecorator } = form;
         // console.warn(alumnos_rechazados)
-        return(
+        return (
             <Modal
                 visible={visible}
                 title={`Registrar tarea`}
@@ -27,31 +27,31 @@ const CreateFormAddTarea = Form.create()(
             >
                 <Form layout="vertical">
                     <FormItem label={(
-                                    <span>
-                                        Fecha de asesoría&nbsp;
+                        <span>
+                            Fecha de asesoría&nbsp;
                                         <Tooltip title="La fecha de asesoría tiene 3 dias habiles.">
-                                            <Icon type="question-circle-o" />
-                                        </Tooltip>
-                                    </span>
-                                )}
+                                <Icon type="question-circle-o" />
+                            </Tooltip>
+                        </span>
+                    )}
                     >
                         {getFieldDecorator('fecha', {
-                            rules: [{required: true, message: 'La fecha de asesoría es obligatoria.'}]
+                            rules: [{ required: true, message: 'La fecha de asesoría es obligatoria.' }]
                         })(<DatePicker format="ll" disabledDate={current => {
-                                    return moment(current).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') || moment(current).format('YYYY-MM-DD') > moment().add(3, 'days').format('YYYY-MM-DD') ;
-                                }
-                            } />)}
+                            return moment(current).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') || moment(current).format('YYYY-MM-DD') > moment().add(3, 'days').format('YYYY-MM-DD');
+                        }
+                        } />)}
                     </FormItem>
                     <FormItem label="Temas a asesorar">
                         {getFieldDecorator('temas_a_asesorar', {
-                            rules: [{required: true, message: 'Los temas a asesorar son obligatorios.'}, {min: 5, message:'El minimo de caracteres es 5.'}, {max: 500, message: 'El maximo de caracteres es 500.'}]
-                        })(<Input.TextArea placeholder="Describa los temas a asesorar" rows={4}/>)}
+                            rules: [{ required: true, message: 'Los temas a asesorar son obligatorios.' }, { min: 5, message: 'El minimo de caracteres es 5.' }, { max: 500, message: 'El maximo de caracteres es 500.' }]
+                        })(<Input.TextArea placeholder="Describa los temas a asesorar" rows={4} />)}
                     </FormItem>
                     <FormItem label="URL del avance de google drive">
                         {getFieldDecorator('url_avance', {
-                            rules: [{required: true, message: 'El url del archivo es necesario para la revisión.'}, {pattern: '^https:\/\/drive.google.com\/.*$', message: 'La URL esta mal formada ejemplo: https://drive.google.com/open?id=0B-agd1bGfOTYcHZNWmtFZ1BINzQ'}]
+                            rules: [{ required: true, message: 'El url del archivo es necesario para la revisión.' }, { pattern: '^https:\/\/drive.google.com\/.*$', message: 'La URL esta mal formada ejemplo: https://drive.google.com/open?id=0B-agd1bGfOTYcHZNWmtFZ1BINzQ' }]
                         })(
-                            <Input prefix={<Icon type="global" style={{ fontSize: 13 }} />} placeholder="URL del sitio donde esta almacenado el archivo del avance ejemplo: https://drive.google.com/open?id=0B-agd1bGfOTYcHZNWmtFZ1BINzQ"/>
+                            <Input prefix={<Icon type="global" style={{ fontSize: 13 }} />} placeholder="URL del sitio donde esta almacenado el archivo del avance ejemplo: https://drive.google.com/open?id=0B-agd1bGfOTYcHZNWmtFZ1BINzQ" />
                         )
                         }
                     </FormItem>
@@ -61,8 +61,8 @@ const CreateFormAddTarea = Form.create()(
     })
 )
 
-export default class FormAddTarea extends Component{
-    constructor(props){
+export default class FormAddTarea extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible: props.visible,
@@ -70,7 +70,7 @@ export default class FormAddTarea extends Component{
         }
     }
     componentWillReceiveProps(nextProps) {
-        const {visible, proyecto, usuario} = nextProps;
+        const { visible, proyecto, usuario } = nextProps;
         this.setState({
             visible,
             proyecto,
@@ -88,13 +88,13 @@ export default class FormAddTarea extends Component{
 
     }
     handleCreate = () => {
-        const {proyecto} = this.state
-        console.log("proyecto"+ proyecto)
+        const { proyecto } = this.state
+        console.log("proyecto" + proyecto)
         const form = this.form;
         form.validateFields((err, values) => {
             if (err) {
                 return;
-            }            
+            }
             // crear post al servidor
             axios.post('/api/proyecto/asesoria', {
                 id_proyecto: proyecto.id,
@@ -104,32 +104,32 @@ export default class FormAddTarea extends Component{
                 temas_a_asesorar: values.temas_a_asesorar
             }).then((res) => {
                 // console.log(res)
-                if(res.status === 200){
+                if (res.status === 200) {
                     message.success("Asesoría registrada satisfactoriamente")
                     this.setState({ visible: false });
                     form.resetFields();
                     this.props.updateAsesorias();
-                }else{
+                } else {
                     Modal.error({
                         title: 'Error al registrar asesoría. Revisar los siguientes campos',
-                        content:(
+                        content: (
                             <div>
                                 {res.data.errores}
                             </div>
-                        ), onOk(){}, 
+                        ), onOk() { },
                     })
                 }
             }).catch((err) => {
-                message.error(err);                                    
+                message.error(err);
             })
         });
     }
     saveFormRef = (form) => {
         this.form = form;
     }
-    render(){
+    render() {
         // console.warn(this.state.proyecto)
-        return(
+        return (
             <div>
 
                 <CreateFormAddTarea

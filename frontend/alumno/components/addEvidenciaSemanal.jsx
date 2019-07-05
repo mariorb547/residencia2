@@ -1,28 +1,28 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import { Button, Modal, Form, Input,Icon, message, Upload} from 'antd';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Button, Modal, Form, Input, Icon, message, Upload } from 'antd';
 const FormItem = Form.Item;
 const { TextArea } = Input;
 
 import axios from 'axios';
 import moment from 'moment';
 
-class FormPlanTrabajo extends Component{
-    constructor(props){
+class FormPlanTrabajo extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            showEvidencia:props.showEvidencia,
-            ruta:props.ruta,
-            disabledAddEvidencia:props.disabledAddEvidencia,
-            fecha_entrega:props.fecha_entrega
-            }
-       
+            showEvidencia: props.showEvidencia,
+            ruta: props.ruta,
+            disabledAddEvidencia: props.disabledAddEvidencia,
+            fecha_entrega: props.fecha_entrega
+        }
+
     }
     // FUNCTIONS UPLOAD FILE
     normFile = (e) => {
         // console.log('Upload event:', e);
         if (Array.isArray(e)) {
-          return e;
+            return e;
         }
         return e && e.fileList;
     }
@@ -37,73 +37,73 @@ class FormPlanTrabajo extends Component{
         }
         return isPDF && isLt10M;
     }
-    afterUpload(){
+    afterUpload() {
         //alert("ruta "+this.state.ruta)
-        axios.get(this.state.ruta).then(res =>{
-              return res.data
+        axios.get(this.state.ruta).then(res => {
+            return res.data
         })
     }
-    dummyRequest(ruta){
-        alert("ruta"+ruta)
+    dummyRequest(ruta) {
+        alert("ruta" + ruta)
         axios.post(ruta, {
-           
+
         }).then((res) => {
-           
-            if(res.status === 200){
+
+            if (res.status === 200) {
                 message.success("Actividad general actualizada satisfactoriamente")
-                
-              
-            }else{
+
+
+            } else {
                 Modal.error({
                     title: 'Error al modificar. Revisar los siguientes campos',
-                    content:(
+                    content: (
                         <div>
                             {res.data.errores}
                         </div>
-                    ), onOk(){}, 
+                    ), onOk() { },
                 })
             }
         }).catch((err) => {
-            message.error(err);                                    
+            message.error(err);
         })
 
-      
+
     }
-    
-    onChange =()=>{
-       
-     this.state.showEvidencia()
-     //alert("que hay")
+
+    onChange = () => {
+
+        this.state.showEvidencia()
+        //alert("que hay")
     }
 
     // END FUNCTIONS UPLOAD FILE
-    render(){
-        let fecha_actual=moment().format('YYYY-MM-DD');
-        
-        const {ruta} = this.props
+    render() {
+        let fecha_actual = moment().format('YYYY-MM-DD');
+
+        const { ruta } = this.props
         // console.log('aui', this.props)
         return (
-         
-             <Form onSubmit={this.handleSubmit} >
-               
-                    <FormItem label="">
-                       
-                            <Upload.Dragger
-                                name="fileEvidencias"
-                                action={ruta}
-                                accept=".pdf"
-                                beforeUpload={this.beforeUpload}
-                                disabled={this.state.disabledAddEvidencia!="aprobado" && this.state.fecha_entrega!=fecha_actual?false:this.state.disabledAddEvidencia=="no aprobado"?false:true}
-                                onChange={()=>this.onChange()}
-                            >
-                                <Icon type="inbox"  style={{ fontSize: '50px', color: '#08c' }} />
-                                <div className="ant-upload-hint">Debe pesar menos de 10 MB.</div>
-                            </Upload.Dragger>
-                        
-                    </FormItem>
-                
+
+            <Form onSubmit={this.handleSubmit} >
+
+                <FormItem label="">
+
+                    <Upload.Dragger
+                        name="fileEvidencias"
+                        action={ruta}
+                        accept=".pdf"
+                        beforeUpload={this.beforeUpload}
+                        disabled={this.state.disabledAddEvidencia != "aprobado" && this.state.fecha_entrega != fecha_actual ? false : this.state.disabledAddEvidencia == "no aprobado" ? false : true}
+                        onChange={() => this.onChange()}
+                    >
+                        <Icon type="inbox" style={{ fontSize: '50px', color: '#08c' }} />
+                        <div className="ant-upload-hint">Debe pesar menos de 10 MB.</div>
+                    </Upload.Dragger>
+
+                </FormItem>
+
             </Form>
-            
+
 
         )
     }
@@ -111,9 +111,9 @@ class FormPlanTrabajo extends Component{
 
 const WrappedFormPlanTrabajo = Form.create({
     mapPropsToFields(props) {
-      return {
-        props
-      }
+        return {
+            props
+        }
     }
-  })(FormPlanTrabajo);
+})(FormPlanTrabajo);
 export default WrappedFormPlanTrabajo;

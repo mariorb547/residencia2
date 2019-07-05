@@ -12,6 +12,8 @@ import FormAddSolucion from '../components/FormAddSolucion.jsx';
 import RevisionSeguimiento from '../components/RevisionSeguimiento.jsx'
 import RevisionSemanalDocente from '../components/RevisionSemanalDocente.jsx';
 import FormPlanDeTrabajo from '../components/FormPlanDeTrabajo.jsx';
+import SeguimientoProyecto from '../components/SeguimientoProyecto.jsx';
+
 export default class Proyecto extends Component {
 
     constructor(props) {
@@ -94,19 +96,8 @@ export default class Proyecto extends Component {
 
         } else {
             const seguimiento = seguimientos.find(seg => seg.id == key);
-
-            if (currentDate >= seguimiento.seguimiento.fecha_inicial && currentDate <= seguimiento.seguimiento.fecha_final) {
-                this.setState({
-                    renderSeguimiento: <RevisionSeguimiento updateProyecto={this.updateProyecto.bind(this)} updateSeguimientos={this.updateSeguimientos.bind(this)} usuario={usuario} seguimiento={seguimiento} />,
-                    visibleEvaluacionAsesorInterno: false,
-                })
-            } else {
-                this.setState({
-                    renderSeguimiento: <Alert message={`No puede acceder al seguimiento,\n Fecha inicial: ${moment(seguimiento.seguimiento.fecha_inicial, 'YYYY-MM-DD').format('LL')} - Fecha final: ${moment(seguimiento.seguimiento.fecha_final, 'YYYY-MM-DD').format('LL')}`} type="warning" showIcon />,
-                    visibleEvaluacionAsesorInterno: false,
-                })
-            }
-        }
+            alert("id seguimiento")
+        }   
     }
     onChangeTab = (key) => {
         const { proyecto } = this.state;
@@ -129,14 +120,38 @@ export default class Proyecto extends Component {
                     if (res.status === 200) {
                         // console.warn('a>', res.data);
                         this.setState({
-                            visibleAddObservacion: false,
-                            visibleAddSolucion: false,
-                            visibleEvaluacionAsesorInterno: false,
+                            
                             seguimientos: res.data,
-                            nombre: res.data.proyecto.alumno.no_control
+                            
                         })
                     }
                 })
+
+                alert("id alumno : "+this.state.usuario.id_alumno+" proyecto id "+this.state.proyecto.id+" id_periodo "+this.state.proyecto.anteproyecto.id_periodo)
+                axios.put(`/api/proyecto/seguimientos`, {
+                    id_proyecto: this.state.proyecto.id,
+                    id_periodo: this.state.proyecto.anteproyecto.id_periodo
+                }).then(res => {
+                    if (res.status === 200) {
+                        axios.get(`/api/alumno/${this.state.proyecto.anteproyecto.alumno.id}/_proyecto`)
+                            .then(res1 => {
+        
+                                if (res1.status === 200) {
+                                    this.setState({
+                                        visibleAddObservacion: false,
+                            visibleAddSolucion: false,
+                            visibleEvaluacionAsesorInterno: false,
+                                      //   renderSeguimiento:<SeguimientoProyecto proyecto={res1.data} seguimientos={res.data} />
+                                        
+                                    })
+                                }
+                            })
+        
+                    }
+                })
+            
+           
+                
         }else if(key==="revisionSemanal"){
             
            {/* axios.get(`/api/proyecto/${proyecto.id}/seguimientos`)
@@ -524,6 +539,7 @@ export default class Proyecto extends Component {
                                 return (
                                     <TabPane tab={<span><Icon type="schedule" />{`Seguimiento ${index + 1}`}</span>} key={seguimiento.id}>
                                         {renderSeguimiento}
+                                        
                                     </TabPane>
                                 )
                             }))}

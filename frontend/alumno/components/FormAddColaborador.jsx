@@ -24,7 +24,7 @@ const CreateFormAddColaborador = Form.create()(
                     <FormItem label="Numero de control de tu colaborador">
                         {getFieldDecorator('numero_control', {
                             rules: [{ required: true, message: 'El colaborador debe tener un numero de control' }]
-                        })(<Input  type="number" style={{ width: '100%' }} placeholder="Numero de control del colaborador" />)}
+                        })(<Input type="number" style={{ width: '100%' }} placeholder="Numero de control del colaborador" />)}
                     </FormItem>
                 </Form>
 

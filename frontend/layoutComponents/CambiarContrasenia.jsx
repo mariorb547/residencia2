@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import { Button, Modal, Form, Input, Icon, message} from 'antd';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Redirect } from 'react-router-dom';
+import { Button, Modal, Form, Input, Icon, message } from 'antd';
 const FormItem = Form.Item;
 import axios from 'axios';
 
 
-const CreateFormCambiarContrasenia= Form.create()(
+const CreateFormCambiarContrasenia = Form.create()(
     (props => {
-        const { visible, onCancel, onCreate, form} = props;
-        const { getFieldDecorator} = form;
+        const { visible, onCancel, onCreate, form } = props;
+        const { getFieldDecorator } = form;
 
-        return(
+        return (
             <Modal
                 visible={visible}
                 title="Cambiar contraseña"
@@ -22,8 +22,8 @@ const CreateFormCambiarContrasenia= Form.create()(
                 <Form layout="vertical">
                     <FormItem label="Nueva contraseña">
                         {getFieldDecorator('nueva_contrasenia', {
-                            rules: [{required: true, message: 'Indique su nueva contraseña'}]
-                        })(<Input  prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Nueva contraseña"/>)}
+                            rules: [{ required: true, message: 'Indique su nueva contraseña' }]
+                        })(<Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Nueva contraseña" />)}
                     </FormItem>
                 </Form>
 
@@ -32,8 +32,8 @@ const CreateFormCambiarContrasenia= Form.create()(
     })
 )
 
-export default class FormCambiarContrasenia extends Component{
-    constructor(props){
+export default class FormCambiarContrasenia extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible: props.visible,
@@ -41,7 +41,7 @@ export default class FormCambiarContrasenia extends Component{
         }
     }
     componentWillReceiveProps(nextProps) {
-        const {visible} = nextProps;
+        const { visible } = nextProps;
         this.setState({
             visible: visible
         })
@@ -60,42 +60,42 @@ export default class FormCambiarContrasenia extends Component{
             if (err) {
                 return;
             }
-            
+
             // crear post al servidor
             axios.put('/api/usuario/cambiar_contrasenia', {
                 nueva_contrasenia: values.nueva_contrasenia,
             }).then((res) => {
                 console.log(res)
-                if(res.status === 200){
+                if (res.status === 200) {
                     form.resetFields();
                     message.success("Contraseña actualizada satisfactoriamente")
                     this.setState({ visible: false, redirect: true });
-                }else{
+                } else {
                     Modal.error({
                         title: 'Error al cambiar contraseña. Revisar los siguientes campos',
-                        content:(
+                        content: (
                             <div>
                                 {res.data.errores}
                             </div>
-                        ), onOk(){}, 
+                        ), onOk() { },
                     })
                 }
             }).catch((err) => {
-                message.error(err);                                    
+                message.error(err);
             })
         });
     }
     saveFormRef = (form) => {
         this.form = form;
     }
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 <CreateFormCambiarContrasenia
-                ref={this.saveFormRef}
-                visible={this.state.visible}
-                onCancel={this.handleCancel}
-                onCreate={this.handleCreate}
+                    ref={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
                 />
             </div>
         )

@@ -7,7 +7,6 @@ import moment from 'moment';
 import axios from 'axios';
 // components
 import WrappedFormSeguimiento from '../components/FormSeguimiento.jsx';
-import WrappedFormSeguimientoFinal from '../components/FormSeguimientoFinal.jsx';
 
 var params = require(__dirname + '/../../../config/params.json');
 

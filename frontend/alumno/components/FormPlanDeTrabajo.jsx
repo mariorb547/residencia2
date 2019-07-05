@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import {Tag,Badge,Button, Modal, Form, Input, Radio,Select, Icon, message, Tabs, onChange, Tooltip, DatePicker, AutoComplete,Row, Col,Menu, Dropdown, InputNumber, Alert } from 'antd';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Tag, Badge, Button, Modal, Form, Input, Radio, Select, Icon, message, Tabs, onChange, Tooltip, DatePicker, AutoComplete, Row, Col, Menu, Dropdown, InputNumber, Alert } from 'antd';
 
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
@@ -13,45 +13,45 @@ import uuid from 'uuid';
 import ObtenerPlanDeTrabajo from './ObtenerPlanDeTrabajo.jsx';
 
 
-export default class FormPlanDeTrabajo extends Component{
-    constructor(props){
+export default class FormPlanDeTrabajo extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible: props.visible,
             proyeproyectoActividadGeneral: props.proyectoActividadGeneral,
-            visibleRegistrarSubactividad:props.visibleRegistrarSubactividad,
-            renderPlanDeTrabajo:null,
-            subactividades:null,
-           
+            visibleRegistrarSubactividad: props.visibleRegistrarSubactividad,
+            renderPlanDeTrabajo: null,
+            subactividades: null,
 
-            
+
+
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const {visible, proyectoActividadGeneral, visibleRegistrarSubactividad} = nextProps;
+        const { visible, proyectoActividadGeneral, visibleRegistrarSubactividad } = nextProps;
         this.setState({
             visible,
-            proyectoActividadGeneral,visibleRegistrarSubactividad
+            proyectoActividadGeneral, visibleRegistrarSubactividad
         })
-        
-               this.setState({
-                   renderPlanDeTrabajo: <ObtenerPlanDeTrabajo  proyecto={this.state.proyeproyectoActividadGeneral}  />
-                  // renderPlanDeTrabajo: <ObtenerTarea />
-               })
-               
-        
+
+        this.setState({
+            renderPlanDeTrabajo: <ObtenerPlanDeTrabajo proyecto={this.state.proyeproyectoActividadGeneral} />
+            // renderPlanDeTrabajo: <ObtenerTarea />
+        })
 
 
-       
+
+
+
     }
-    componentDidMount(){
-       
+    componentDidMount() {
+
     }
 
-    getActividadesGenerales=()=>{
-         
-       
+    getActividadesGenerales = () => {
+
+
 
     }
 
@@ -60,100 +60,100 @@ export default class FormPlanDeTrabajo extends Component{
             visible: true,
         });
     }
-    showAddSubactividad= () => {
+    showAddSubactividad = () => {
         this.setState({
             visibleRegistrarSubactividad: true
         })
     }
-  
+
     handleCancel = () => {
-        
+
         this.setState({ visible: false });
-        
+
     }
 
     handleUpdate = () => {
-       //se actualizan los datos en la tabla
+        //se actualizan los datos en la tabla
         //se cargan las actividades principales
-         //se cargan las actividades principales
-      
-              
-               this.setState({
-                   renderPlanDeTrabajo: <ObtenerPlanDeTrabajo  proyecto={this.state.proyeproyectoActividadGeneral} />,
-                 
-                  // renderPlanDeTrabajo: <ObtenerTarea />
-                   
-               })
-          
+        //se cargan las actividades principales
+
+
+        this.setState({
+            renderPlanDeTrabajo: <ObtenerPlanDeTrabajo proyecto={this.state.proyeproyectoActividadGeneral} />,
+
+            // renderPlanDeTrabajo: <ObtenerTarea />
+
+        })
+
 
 
         message.success("Actulización finalizada")
-      
+
     }
 
     saveFormRef = (form) => {
         this.form = form;
     }
-    
-    render(){
+
+    render() {
         // console.warn(this.state.proyecto)
-        const {visibleRegistrarSubactividad,proyectoActividadGeneral} = this.state;
-        
-        return(
+        const { visibleRegistrarSubactividad, proyectoActividadGeneral } = this.state;
+
+        return (
             <div>
 
-               
-<Modal
-            visible={this.state.visible}
-            title={`Plan de trabajo`}
-            okText="Guardar"
-            onCancel={this.handleCancel}
-            onOk={this.handleUpdate}
-            width={1300}
-            height={1500}
-            maskClosable={false}
-            centered
-            footer={[
-                <Button key="back" onClick={this.handleCancel}>Cerrar</Button>,
-                <Button key="submit" type="primary" onClick={this.handleUpdate} >
-                  Actualizar
-                </Button>,
-              ]}
-            >
-                <Form layout="vertical">
-                    <Row>
-                    
-                    <Col span={8}>
-                        <div>
-                        <Badge status="processing" />
-                        <Tag color="#979997">En revisión</Tag>
-                        </div>
-                   </Col>
-                     <Col span={8}>
-                        <div>
-                        <Badge status="processing" />
-                        <Tag color="#00CC00">Aprobado</Tag>
-                        </div>
-                     </Col>
-                     <Col span={8}>
-                        <div>
-                        <Badge status="processing" />
-                        <Tag color=" #FF1A1A">No aprobado</Tag>
-                        </div>
-                     </Col>
-                     
-                        
-                     <Col span={24}>
-                        {this.state.renderPlanDeTrabajo}
-                        
-                     </Col>
-                     
-                    </Row>
 
-                
-                </Form>
-            </Modal>
-             
+                <Modal
+                    visible={this.state.visible}
+                    title={`Plan de trabajo`}
+                    okText="Guardar"
+                    onCancel={this.handleCancel}
+                    onOk={this.handleUpdate}
+                    width={1300}
+                    height={1500}
+                    maskClosable={false}
+                    centered
+                    footer={[
+                        <Button key="back" onClick={this.handleCancel}>Cerrar</Button>,
+                        <Button key="submit" type="primary" onClick={this.handleUpdate} >
+                            Actualizar
+                </Button>,
+                    ]}
+                >
+                    <Form layout="vertical">
+                        <Row>
+
+                            <Col span={8}>
+                                <div>
+                                    <Badge status="processing" />
+                                    <Tag color="#979997">En revisión</Tag>
+                                </div>
+                            </Col>
+                            <Col span={8}>
+                                <div>
+                                    <Badge status="processing" />
+                                    <Tag color="#00CC00">Aprobado</Tag>
+                                </div>
+                            </Col>
+                            <Col span={8}>
+                                <div>
+                                    <Badge status="processing" />
+                                    <Tag color=" #FF1A1A">No aprobado</Tag>
+                                </div>
+                            </Col>
+
+
+                            <Col span={24}>
+                                {this.state.renderPlanDeTrabajo}
+
+                            </Col>
+
+                        </Row>
+
+
+                    </Form>
+                </Modal>
+
             </div>
         )
     }

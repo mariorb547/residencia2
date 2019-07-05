@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 
-import {Row, Col, Button, Table, Icon, Switch,Popover,Modal,Badge,message,Form,Tooltip} from 'antd';
+import {Row, Col, Button, Table, Icon, Switch,Popover,Modal,Badge,message,Form,Tooltip,Steps} from 'antd';
 import moment from 'moment';
 import WrappedAddEvidencia from './addEvidenciaSemanal.jsx';
 import WrappedAddFormatoSemanal from './addFormatoSemanal.jsx';
 import FormShowObservacionBadge from './FormShowObservacionBadge.jsx';
 import FormShowObservacion from './FormShowObservacion.jsx';
 import PDF2 from 'react-pdf-js-infinite';
+
+const Step = Steps.Step;
+
 // components
 import uuid from 'uuid';
 import axios from 'axios';
@@ -150,13 +153,17 @@ export default class RevisionSemanal extends Component{
         let evidencias_filter =this.state.dataSource_evidencias
         evidencias_filter =evidencias_filter.filter((evidencia) => evidencia.id_tarea === id);
         
-
-        const listItems = evidencias_filter.map((item) =>
-                <li key={uuid.v1()}>
-                    <Button icon="file" onClick={()=>this.showEvidencia(item.filename_evidencia,item.id,item.id_tarea)}/>
-                </li>
+        evidencias_filter=evidencias_filter.reverse();
+            
+        const listItems = evidencias_filter.map((item,index) =>
+        <li key={uuid.v1()}>
+        <Steps direction="vertical" size="small" current={1}>
+         <Step title={"Evidencia "+(index+1)}  icon="file" onClick={()=>this.showEvidencia(item.filename_evidencia,item.id,item.id_tarea)}/>
+        </Steps>
+              
+        </li>
         );
- 
+        
         
      return <div><ul>{listItems}</ul></div>
     }
@@ -404,7 +411,7 @@ export default class RevisionSemanal extends Component{
                 dataIndex: 'evidencia',
                 key: 'evidencia_doc',
                 render: (text, record) => (
-                    <Popover id="PopoverEvidencia" content={this.evidencias(record.id)} title="Evidencias" trigger="click">
+                    <Popover id="PopoverEvidencia" content={this.evidencias(record.id)} title="Evidencias"  trigger="hover">
                             <Button icon="file-pdf"></Button>
                     </Popover>
                 )
@@ -621,7 +628,7 @@ export default class RevisionSemanal extends Component{
         
         const columnasSemanas = [
             {  
-                width:"95%",
+                width:"85%",
                 title:"Semana",
                 dataIndex:'fecha_entrega',
                 key: 'fecha_entrega',

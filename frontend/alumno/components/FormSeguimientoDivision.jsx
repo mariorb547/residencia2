@@ -30,8 +30,8 @@ class FormSeguimiento extends Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { seguimiento, residentes, numeroseguimiento } = this.props;
-       
-  
+
+
         // const residentes = [];
         // for (var i = 0; i < 100; i++) {
         //     residentes.push({
@@ -173,8 +173,8 @@ class FormSeguimiento extends Component {
         //                 key,
         //             }
         //         })
-                
-                
+
+
         //     }
         // })
         return (
@@ -185,7 +185,7 @@ class FormSeguimiento extends Component {
 
                 <Row  >
                     <Col xs={24} lg={24}>
-                        <Button  icon="file-pdf" style={{ left: 800 }}><a href={`/api/generar/${seguimiento.id}/seguimiento/${numeroseguimiento}/seguimiento`} target="_blank">Genera</a></Button>
+                        <Button icon="file-pdf" style={{ left: 800 }}><a href={`/api/generar/${seguimiento.id}/seguimiento/${numeroseguimiento}/seguimiento`} target="_blank">Genera</a></Button>
                         <br /><br />
                         <Table bordered title={() => `Seguimiento ${numeroseguimiento}`} columns={columns} dataSource={residentes} pagination={{ pageSize: 5 }} className="full-width" loading={loadTable} scroll={{ x: 1000 }} />
                     </Col>

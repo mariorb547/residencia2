@@ -28,7 +28,7 @@ class LayoutDocente extends Component {
             departamento: null,
             imagen: null,
             nombre: null,
-            id:null,
+            id: null,
             componentRender: {
                 title: null,
                 render: null
@@ -77,7 +77,7 @@ class LayoutDocente extends Component {
                                 departamento: res.data,
                                 isAuth: usuario.isAuth,
                                 usuario: usuario,
-                                 id: usuario.id,
+                                id: usuario.id,
                                 componentRender: {
                                     title: this.logo("Revision de proyectos"),
                                     render: <RevisionAnteproyectos usuario={usuario} departamento={res.data} />
@@ -136,7 +136,7 @@ class LayoutDocente extends Component {
                     visibleCambiarContrasenia: false,
                     visible_add_docente: false,
                     componentRender: {
-                        title:this.logo("Permiso denegado"),
+                        title: this.logo("Permiso denegado"),
                         render: <Alert message="Permiso denegado, solo el presidente de academia o jefe de departamento puede realizar esta acción." type="warning" showIcon />
                     }
                 })
@@ -156,7 +156,7 @@ class LayoutDocente extends Component {
                             visibleCambiarContrasenia: false,
                             visible_add_docente: false,
                             componentRender: {
-                                title:this.logo( 'Proyectos de residencia asignados'),
+                                title: this.logo('Proyectos de residencia asignados'),
                                 render: <RevisionProyectoResidencia proyectos={res.data} usuario={this.state.usuario} />
                             }
                         })
@@ -173,7 +173,7 @@ class LayoutDocente extends Component {
                     visibleCambiarContrasenia: false,
                     visible_add_docente: false,
                     componentRender: {
-                        title:this.logo( 'Revision de seguimientos'),
+                        title: this.logo('Revision de seguimientos'),
                         render: <RevisionSeguimientos carreras={carreras} usuario={_usuario} />
                     }
                 })
@@ -183,23 +183,23 @@ class LayoutDocente extends Component {
                     visibleCambiarContrasenia: false,
                     visible_add_docente: false,
                     componentRender: {
-                        title:this.logo("Permiso denegado"),
+                        title: this.logo("Permiso denegado"),
                         render: <Alert message="Permiso denegado, solo el presidente de academia, jefe de departamento, jefe de proyecto ó el asesor interno del proyecto puede realizar esta acción." type="warning" showIcon />
                     }
                 })
             }
-        }if (key == 6) {
+        } if (key == 6) {
             this.setState({
                 componentSelected: key,
                 componentRender: {
                     title: this.logo("Actualizacion de tu foto de perfil"),
-                    render: <Foto ok={this.imagens.bind(this)}/>
+                    render: <Foto ok={this.imagens.bind(this)} />
                 }
             })
         }
     }
     render() {
-        const { isAuth, componentSelected,imagen, nombre, componentRender, visibleCambiarContrasenia, usuario, departamento } = this.state
+        const { isAuth, componentSelected, imagen, nombre, componentRender, visibleCambiarContrasenia, usuario, departamento } = this.state
         return (
             isAuth ? (
                 <Layout style={{ minHeight: '100vh' }}>
@@ -264,14 +264,14 @@ class LayoutDocente extends Component {
                         </Menu>
                     </Sider>
                     <Layout>
-                    <Header style={{ background: '#fff', padding: 0., height: 150 }}>
+                        <Header style={{ background: '#fff', padding: 0., height: 150 }}>
                             <Icon
                                 className="trigger"
                                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                                 onClick={this.toggle}
                             />
-                             <div style={{ float: 'right', left: 50 }} >
-                            {componentRender.title}
+                            <div style={{ float: 'right', left: 50 }} >
+                                {componentRender.title}
                             </div>
                         </Header>
                         <Content style={{ margin: '24px 16px', padding: 24, background: '#fff' }}>

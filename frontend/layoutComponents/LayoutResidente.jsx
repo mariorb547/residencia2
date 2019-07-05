@@ -38,15 +38,15 @@ export default class LayoutResidente extends Component {
             planAprobado: false
         }
     }
-    componentWillReceiveProps=(nextProps)=>{
+    componentWillReceiveProps = (nextProps) => {
         this.setState({
-           planAprobado:nextProps.planAprobado
-            
+            planAprobado: nextProps.planAprobado
+
         })
-      }
+    }
     componentWillMount() {
         this.getIsAuth()
-       
+
     }
     imagens = (id) => {
         axios.get(`/api/usuario/foto/${id ? id : this.state.usuario.id}`)
@@ -123,7 +123,7 @@ export default class LayoutResidente extends Component {
             }
         })
     }
-    
+
     toggle = () => {
         this.setState({
             collapsed: !this.state.collapsed,
@@ -173,8 +173,8 @@ export default class LayoutResidente extends Component {
             axios.get(`/api/alumno/${usuario.id_alumno}/_proyecto`)
                 .then(res => {
                     if (res.status === 200) {
-                        this.statusPlanDeTrabajo(res.data.id,key,usuario,res.data)
-                                               
+                        this.statusPlanDeTrabajo(res.data.id, key, usuario, res.data)
+
                     }
                 })
 
@@ -189,8 +189,8 @@ export default class LayoutResidente extends Component {
                         .then(res1 => {
 
                             if (res1.status === 200) {
-                                this.statusPlanDeTrabajoSeguimiento(res1.data.id,key,res1.data,res.data)
-                                
+                                this.statusPlanDeTrabajoSeguimiento(res1.data.id, key, res1.data, res.data)
+
                             }
                         })
 
@@ -218,9 +218,9 @@ export default class LayoutResidente extends Component {
             visibleCancelacion: true
         })
     }
-    
-    statusPlanDeTrabajo = (id_proyecto,key,usuario,proyecto) => {
-        var bandera=true;
+
+    statusPlanDeTrabajo = (id_proyecto, key, usuario, proyecto) => {
+        var bandera = true;
         axios.get(`/api/plan_de_trabajo/${id_proyecto}/get_actividad_general`)
             .then(res => {
                 if (res.status === 200) {
@@ -232,7 +232,8 @@ export default class LayoutResidente extends Component {
                             visibleCancelacion: false,
                             componentRender: {
                                 title: this.logo("Asesorias"),
-                                render:<h1 style={{background:"red"}}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>  }
+                                render: <h1 style={{ background: "red" }}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>
+                            }
                         })
                     }
                     res.data.map((actividad) => {
@@ -241,7 +242,7 @@ export default class LayoutResidente extends Component {
 
                                 if (tarea.estado_revision_plan !== "aprobado") {
 
-                                    bandera=false;
+                                    bandera = false;
                                 }
                             })
                         })
@@ -250,7 +251,7 @@ export default class LayoutResidente extends Component {
 
                 }
 
-                if(bandera){
+                if (bandera) {
                     this.setState({
                         componentSelected: key,
                         visibleCambiarContrasenia: false,
@@ -260,7 +261,7 @@ export default class LayoutResidente extends Component {
                             render: <RevisionSemanal key={uuid.v1()} updateAsesorias={this.updateAsesorias.bind(this)} usuario={usuario} proyecto={proyecto} />
                         }
                     })
-                }else{
+                } else {
                     this.setState({
                         planAprobado: true,
                         componentSelected: key,
@@ -268,15 +269,16 @@ export default class LayoutResidente extends Component {
                         visibleCancelacion: false,
                         componentRender: {
                             title: this.logo("Asesorias"),
-                            render:<h1 style={{background:"red"}}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>  }
+                            render: <h1 style={{ background: "red" }}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>
+                        }
                     })
                 }
             })
 
     }
 
-    statusPlanDeTrabajoSeguimiento = (id_proyecto,key,proyecto,seguimientos) => {
-        var bandera=true;
+    statusPlanDeTrabajoSeguimiento = (id_proyecto, key, proyecto, seguimientos) => {
+        var bandera = true;
         axios.get(`/api/plan_de_trabajo/${id_proyecto}/get_actividad_general`)
             .then(res => {
                 if (res.status === 200) {
@@ -288,8 +290,8 @@ export default class LayoutResidente extends Component {
                             visibleCancelacion: false,
                             componentRender: {
                                 title: this.logo("Seguimientos"),
-                                render:<h1 style={{background:"red"}}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno  </h1>  
-                               
+                                render: <h1 style={{ background: "red" }}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno  </h1>
+
                             }
                         })
                     }
@@ -299,7 +301,7 @@ export default class LayoutResidente extends Component {
 
                                 if (tarea.estado_revision_plan !== "aprobado") {
 
-                                    bandera=false;
+                                    bandera = false;
                                 }
                             })
                         })
@@ -308,7 +310,7 @@ export default class LayoutResidente extends Component {
 
                 }
 
-                if(bandera){
+                if (bandera) {
                     this.setState({
                         componentSelected: key,
                         visibleCambiarContrasenia: false,
@@ -318,18 +320,18 @@ export default class LayoutResidente extends Component {
                             render: <SeguimientoProyecto proyecto={proyecto} seguimientos={seguimientos} />
                         }
                     })
-                }else{
+                } else {
                     this.setState({
                         componentSelected: key,
                         visibleCambiarContrasenia: false,
                         visibleCancelacion: false,
                         componentRender: {
                             title: this.logo("Seguimientos"),
-                            render:<h1 style={{background:"red"}}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>  
-                           
+                            render: <h1 style={{ background: "red" }}>El plan de trabajo no ha sido aprobado, comuníquese con su asesor interno </h1>
+
                         }
                     })
-                   
+
                 }
             })
 

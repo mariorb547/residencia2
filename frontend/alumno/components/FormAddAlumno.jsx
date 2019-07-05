@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {render} from 'react-dom';
-import { Button, Modal, Form, Input, Radio,Select, Icon, message, Tabs, Timeline, Row, Col} from 'antd';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Button, Modal, Form, Input, Radio, Select, Icon, message, Tabs, Timeline, Row, Col } from 'antd';
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -11,25 +11,25 @@ import axios from 'axios';
 
 const CreateFormAddAlumno = Form.create()(
     (props => {
-        const { visible, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo} = props;
-        const { getFieldDecorator} = form;
+        const { visible, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo } = props;
+        const { getFieldDecorator } = form;
         // console.warn(alumnos_rechazados)
         const TipoDeSeguro = getFieldDecorator('id_tipo_seguro', {
-          })(
+        })(
             <Select style={{ width: 80 }}>
-              <Option value="1">IMMS.</Option>
-              <Option value="2">ISSTE</Option>
-              <Option value="3">METLIFE</Option>
-              <Option value="4">GNP</Option>
-              <Option value="5">QUÁLITAS</Option>
-              <Option value="6">INBURSA</Option>
-              <Option value="7">OTRO</Option>
+                <Option value="1">IMMS.</Option>
+                <Option value="2">ISSTE</Option>
+                <Option value="3">METLIFE</Option>
+                <Option value="4">GNP</Option>
+                <Option value="5">QUÁLITAS</Option>
+                <Option value="6">INBURSA</Option>
+                <Option value="7">OTRO</Option>
             </Select>
-          );
-        return(
+        );
+        return (
             <Modal
                 visible={visible}
-                title={`Agregar alumno a la carrera de ${carrera ? carrera.nombre: ''}`}
+                title={`Agregar alumno a la carrera de ${carrera ? carrera.nombre : ''}`}
                 okText="Guardar"
                 onCancel={onCancel}
                 onOk={onCreate}
@@ -38,118 +38,118 @@ const CreateFormAddAlumno = Form.create()(
             >
                 <Tabs defaultActiveKey="1">
                     <TabPane tab={<span><Icon type="user-add" />Nuevo candidato</span>} key="1">
-                        
+
                         <Form layout="vertical">
                             <Row >
-                            <Col xs={24} lg={24}>
-                                <Row gutter={16}>
-                                    <Col xs={24} lg={12}>
-                                        <FormItem label="Número de control">
-                                            {getFieldDecorator('no_control', {
-                                                rules: [{required: true, message: 'El número de control es obligatorio.'},{len: 8, message: 'El numero de control contiene 8 digitos'}]
-                                            })(<Input  type="number" style={{ width: '100%' }} placeholder="Ingrese el número de control del alumno"/>)}
+                                <Col xs={24} lg={24}>
+                                    <Row gutter={16}>
+                                        <Col xs={24} lg={12}>
+                                            <FormItem label="Número de control">
+                                                {getFieldDecorator('no_control', {
+                                                    rules: [{ required: true, message: 'El número de control es obligatorio.' }, { len: 8, message: 'El numero de control contiene 8 digitos' }]
+                                                })(<Input type="number" style={{ width: '100%' }} placeholder="Ingrese el número de control del alumno" />)}
 
-                                        </FormItem>
-                                    </Col>
-                                    <Col xs={24} lg={12}>
-                                        <FormItem label="Plan de estudios">
-                                            {getFieldDecorator('plan_estudios', {
-                                                rules: [{required: true, message: 'El plan de estudio es obligatorio.'}]
-                                            })(<Select>
+                                            </FormItem>
+                                        </Col>
+                                        <Col xs={24} lg={12}>
+                                            <FormItem label="Plan de estudios">
+                                                {getFieldDecorator('plan_estudios', {
+                                                    rules: [{ required: true, message: 'El plan de estudio es obligatorio.' }]
+                                                })(<Select>
                                                     <Option key="2009-2010" value="2009-2010">2009-2010</Option>
                                                     <Option key="2015-2016" value="2015-2016">2015-2016</Option>
                                                 </Select>)}
-                                        </FormItem>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Nombre">
-                                {getFieldDecorator('nombre', {
-                                    rules: [{required: true, message: 'El alumno debe tener un nombre'}]
-                                })(<Input  type="mayuscula" placeholder="Ingrese el nombre(s) del alumno"/>)}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Apellido paterno">
-                                {getFieldDecorator('ap_paterno', {
-                                    rules: [{required: true, message: 'El alumno debe tener un apellido paterno.'}]
-                                })(<Input   type="mayuscula" placeholder="Ingrese el apellido paterno del alumno"/>)}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Apellido materno">
-                                {getFieldDecorator('ap_materno', {
-                                    rules: [{required: true, message: 'El alumno debe tener un apellido materno'}]
-                                })(<Input  type="mayuscula" placeholder="Ingrese el apellido materno del alumno"/>)}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                                <Row gutter={16}>
-                                    <Col xs={24} lg={12}>
-                                        <FormItem label="Sexo">
-                                            {getFieldDecorator('sexo', {
-                                                rules: [{required: true, message: 'El alumno debe indicar su sexo.'}]
-                                            })(<Select placeholder="Seleccione una opción">
+                                            </FormItem>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Nombre">
+                                        {getFieldDecorator('nombre', {
+                                            rules: [{ required: true, message: 'El alumno debe tener un nombre' }]
+                                        })(<Input type="mayuscula" placeholder="Ingrese el nombre(s) del alumno" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Apellido paterno">
+                                        {getFieldDecorator('ap_paterno', {
+                                            rules: [{ required: true, message: 'El alumno debe tener un apellido paterno.' }]
+                                        })(<Input type="mayuscula" placeholder="Ingrese el apellido paterno del alumno" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Apellido materno">
+                                        {getFieldDecorator('ap_materno', {
+                                            rules: [{ required: true, message: 'El alumno debe tener un apellido materno' }]
+                                        })(<Input type="mayuscula" placeholder="Ingrese el apellido materno del alumno" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <Row gutter={16}>
+                                        <Col xs={24} lg={12}>
+                                            <FormItem label="Sexo">
+                                                {getFieldDecorator('sexo', {
+                                                    rules: [{ required: true, message: 'El alumno debe indicar su sexo.' }]
+                                                })(<Select placeholder="Seleccione una opción">
                                                     <Option key="H" value="H">Hombre</Option>
                                                     <Option key="M" value="M">Mujer</Option>
                                                 </Select>)}
-                                        </FormItem>
-                                    </Col>
-                                    <Col xs={24} lg={12} >
-                                        <FormItem label="Seguridad social">
-                                            {getFieldDecorator('no_seguro', {
-                                                rules: [{required: true, message: 'Debe indicar el número de seguro del alumno.'}]
-                                            })(<Input addonBefore={TipoDeSeguro} style={{ width: '100%' }} placeholder="Número de seguro"/>)}
-                                        </FormItem>
-                                    </Col>
-                                </Row>
-                            </Col>
+                                            </FormItem>
+                                        </Col>
+                                        <Col xs={24} lg={12} >
+                                            <FormItem label="Seguridad social">
+                                                {getFieldDecorator('no_seguro', {
+                                                    rules: [{ required: true, message: 'Debe indicar el número de seguro del alumno.' }]
+                                                })(<Input addonBefore={TipoDeSeguro} style={{ width: '100%' }} placeholder="Número de seguro" />)}
+                                            </FormItem>
+                                        </Col>
+                                    </Row>
+                                </Col>
 
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Ciudad">
-                                {getFieldDecorator('ciudad', {
-                                    rules: [{required: true, message: 'El alumno debe indicar su ciudad.'}]
-                                })(<Input   type="mayuscula" placeholder="Ingrese la ciudad del alumno"/>)}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Domicilio">
-                                {getFieldDecorator('domicilio', {
-                                    rules: [{required: true, message: 'El alumno debe indicar su domicilio.'}]
-                                })(<Input  type="mayuscula"  placeholder="Ingrese el domicilio del alumno"/>)}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Correo electronico">
-                                {getFieldDecorator('correo', {
-                                    rules: [{type: 'email',message: 'El correo no es correcto'},{required: true, message: 'Necesita su correo para autentificarse en el sistema.'}]
-                                })(
-                                    <Input  prefix={<Icon type="user" style={{fontSize: 13}} />} type="email" placeholder="Ingrese el correo electronico del alumno" />
-                                )}
-                            </FormItem>
-                            </Col>
-                            <Col xs={24} lg={24}>
-                            <FormItem label="Télefono (no celular)">
-                                {getFieldDecorator('numero_celular', {
-                                    rules: [{required: true, message: 'Ingrese el número de telefono celular del alumno.'}]
-                                })(
-                                    <Input prefix={<Icon type="phone" style={{fontSize: 13}} />} placeholder="Ingrese el número de telefono celular del alumno" />
-                                )}
-                            </FormItem>
-                            </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Ciudad">
+                                        {getFieldDecorator('ciudad', {
+                                            rules: [{ required: true, message: 'El alumno debe indicar su ciudad.' }]
+                                        })(<Input type="mayuscula" placeholder="Ingrese la ciudad del alumno" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Domicilio">
+                                        {getFieldDecorator('domicilio', {
+                                            rules: [{ required: true, message: 'El alumno debe indicar su domicilio.' }]
+                                        })(<Input type="mayuscula" placeholder="Ingrese el domicilio del alumno" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Correo electronico">
+                                        {getFieldDecorator('correo', {
+                                            rules: [{ type: 'email', message: 'El correo no es correcto' }, { required: true, message: 'Necesita su correo para autentificarse en el sistema.' }]
+                                        })(
+                                            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} type="email" placeholder="Ingrese el correo electronico del alumno" />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                                <Col xs={24} lg={24}>
+                                    <FormItem label="Télefono (no celular)">
+                                        {getFieldDecorator('numero_celular', {
+                                            rules: [{ required: true, message: 'Ingrese el número de telefono celular del alumno.' }]
+                                        })(
+                                            <Input prefix={<Icon type="phone" style={{ fontSize: 13 }} />} placeholder="Ingrese el número de telefono celular del alumno" />
+                                        )}
+                                    </FormItem>
+                                </Col>
                             </Row>
                         </Form>
-                        
+
                     </TabPane>
                     <TabPane tab={<span><Icon type="usergroup-delete" />Candidato a residente rechazado</span>} key="2">
-                        <Timeline style={{marginLeft: 10}}>
+                        <Timeline style={{ marginLeft: 10 }}>
                             {alumnos_rechazados.map((alumno, key) => {
-                                return (<Timeline.Item  dot={<Icon type="exclamation-circle-o" style={{ fontSize: '16px' }} />} color="red" key={key}>
-                                            <p>{`${alumno.no_control} - ${alumno.nombre} ${alumno.ap_paterno} ${alumno.ap_materno}`}</p>
-                                            <Button onClick={() => addToPeriodo(alumno.id)}>Agregar al periodo</Button>
-                                        </Timeline.Item>
-                                        )
+                                return (<Timeline.Item dot={<Icon type="exclamation-circle-o" style={{ fontSize: '16px' }} />} color="red" key={key}>
+                                    <p>{`${alumno.no_control} - ${alumno.nombre} ${alumno.ap_paterno} ${alumno.ap_materno}`}</p>
+                                    <Button onClick={() => addToPeriodo(alumno.id)}>Agregar al periodo</Button>
+                                </Timeline.Item>
+                                )
                             })}
                         </Timeline>
                     </TabPane>
@@ -160,8 +160,8 @@ const CreateFormAddAlumno = Form.create()(
     })
 )
 
-export default class FormAddAlumno extends Component{
-    constructor(props){
+export default class FormAddAlumno extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible: props.visible,
@@ -171,7 +171,7 @@ export default class FormAddAlumno extends Component{
         }
     }
     componentWillReceiveProps(nextProps) {
-        const {visible, carrera} = nextProps;
+        const { visible, carrera } = nextProps;
         this.setState({
             visible: visible,
             carrera: carrera,
@@ -189,25 +189,25 @@ export default class FormAddAlumno extends Component{
     }
     addToPeriodo = (id_alumno) => {
         // alert('chi => '+id_alumno)
-        axios.put('/api/alumno/retry_anteproyecto',{
+        axios.put('/api/alumno/retry_anteproyecto', {
             id_alumno,
             id_periodo: this.state.id_periodo
         }).then(res => {
-            if(res.status === 200){
+            if (res.status === 200) {
                 message.success("Alumno agregado al periodo !")
                 this.setState({ visible: false });
-            }else{
+            } else {
                 Modal.error({
                     title: 'Error al actualizar al alumno. Revisar los siguientes campos',
-                    content:(
+                    content: (
                         <div>
                             {res.data.errores}
                         </div>
-                    ), onOk(){}, 
+                    ), onOk() { },
                 })
             }
         }).catch((err) => {
-            message.error(err);                                    
+            message.error(err);
         })
     }
     handleCreate = () => {
@@ -215,7 +215,7 @@ export default class FormAddAlumno extends Component{
         form.validateFields((err, values) => {
             if (err) {
                 return;
-            }            
+            }
             // crear post al servidor
             axios.post('/api/alumno', {
                 no_control: values.no_control,
@@ -234,30 +234,30 @@ export default class FormAddAlumno extends Component{
                 plan_estudios: values.plan_estudios
             }).then((res) => {
                 // console.log(res)
-                if(res.status === 200){
+                if (res.status === 200) {
                     message.success("Alumno agregado satisfactoriamente")
                     this.setState({ visible: false });
                     form.resetFields();
-                }else{
+                } else {
                     Modal.error({
                         title: 'Error al guardar al alumno. Revisar los siguientes campos',
-                        content:(
+                        content: (
                             <div>
                                 {res.data.errores}
                             </div>
-                        ), onOk(){}, 
+                        ), onOk() { },
                     })
                 }
             }).catch((err) => {
-                message.error(err);                                    
+                message.error(err);
             })
         });
     }
     saveFormRef = (form) => {
         this.form = form;
     }
-    render(){
-        return(
+    render() {
+        return (
             <div>
 
                 <CreateFormAddAlumno
