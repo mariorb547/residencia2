@@ -3852,11 +3852,11 @@ module.exports = {
             content: [
                 {
                     margin: [0, 10, 0, 0],
-                    alignment: 'center',
+                    alignment: 'left',
                     width: '*',
                     text: [
                         { text: `Periodo: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.periodo.periodo, style: 'subtitulo' },
+                        { text: proyecto.anteproyecto.periodo.periodo.toUpperCase(), style: 'subtitulo' },
                         { text: `         Año: `, style: 'subtitulo', bold: true },
                         { text: proyecto.anteproyecto.periodo.ciclo, style: 'subtitulo' }
 
@@ -3868,7 +3868,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Nombre del proyecto: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.nombre, style: 'subtitulo' },
+                        { text: proyecto.anteproyecto.nombre.toUpperCase(), style: 'subtitulo' },
                     ]
                 },
                 {
@@ -3877,7 +3877,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Objetivo general del proyecto: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.objetivo_general, style: 'subtitulo' }
+                        { text: proyecto.anteproyecto.objetivo_general.toUpperCase(), style: 'subtitulo' }
                     ]
                 },
                 {
@@ -3886,7 +3886,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Nombre del residente: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.alumno.nombre + " " + proyecto.anteproyecto.alumno.ap_paterno + " " + proyecto.anteproyecto.alumno.ap_materno, style: 'subtitulo' }
+                        { text: proyecto.anteproyecto.alumno.nombre.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_materno.toUpperCase(), style: 'subtitulo' }
                     ]
                 },
                 {
@@ -3895,7 +3895,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Nombre del asesor interno: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_interno.titulo + " " + proyecto.anteproyecto.asesor_interno.nombre + " " + proyecto.anteproyecto.asesor_interno.ap_paterno + " " + proyecto.anteproyecto.asesor_interno.ap_materno, style: 'subtitulo' }
+                        { text: proyecto.anteproyecto.asesor_interno.titulo.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.nombre.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_materno.toUpperCase(), style: 'subtitulo' }
                     ]
                 },
                 {
@@ -3904,7 +3904,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Nombre del asesor externo: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_externo.nombre, style: 'subtitulo' }
+                        { text: proyecto.anteproyecto.asesor_externo.nombre.toUpperCase(), style: 'subtitulo' }
                     ]
                 },
                 {
@@ -3913,7 +3913,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `Empresa: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_externo.empresa.nombre, style: 'subtitulo' }
+                        { text: proyecto.anteproyecto.asesor_externo.empresa.nombre.toUpperCase(), style: 'subtitulo' }
                     ]
                 },
                 {
@@ -3938,13 +3938,13 @@ module.exports = {
                         widths: ['*', '*', '*'],
                         alignment: 'center',
                         body: [
-                            [{ alignment: 'center', style: 'firma', text: proyecto.anteproyecto.asesor_interno.titulo + " " + proyecto.anteproyecto.asesor_interno.nombre + " " + proyecto.anteproyecto.asesor_interno.ap_paterno + " " + proyecto.anteproyecto.asesor_interno.ap_materno, decoration: 'underline' },
-                            { alignment: 'center', text: proyecto.anteproyecto.asesor_externo.nombre, style: 'firma', decoration: 'underline' },
-                            { alignment: 'center', style: 'firma', text: proyecto.anteproyecto.alumno.nombre + " " + proyecto.anteproyecto.alumno.ap_paterno + " " + proyecto.anteproyecto.alumno.ap_materno, decoration: 'underline' }
+                            [{ alignment: 'center',  style: 'subtitulo', text: proyecto.anteproyecto.asesor_interno.titulo.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.nombre.toUpperCase()+ " " + proyecto.anteproyecto.asesor_interno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_materno.toUpperCase(), decoration: 'underline' },
+                            { alignment: 'center', text: proyecto.anteproyecto.asesor_externo.nombre.toUpperCase(), style: 'subtitulo', decoration: 'underline' },
+                            { alignment: 'center', style: 'subtitulo', text: proyecto.anteproyecto.alumno.nombre.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_materno.toUpperCase(), decoration: 'underline' }
                             ],
-                            [{ alignment: 'center', text: 'Asesor Interno', style: 'firma' },
-                            { alignment: 'center', text: 'Asesor Externo', style: 'firma' },
-                            { alignment: 'center', text: 'Residente', style: 'firma' }],
+                            [{ alignment: 'center', text: 'Asesor Interno',  style: 'subtitulo' },
+                            { alignment: 'center', text: 'Asesor Externo', style: 'subtitulo' },
+                            { alignment: 'center', text: 'Residente',  style: 'subtitulo' }],
                         ]
                     },
                     layout: 'noBorders'
@@ -3998,6 +3998,10 @@ module.exports = {
         var tem = []
         var contador = 1;
         var nombreJefeDepartamento;
+        
+        var observacionesPrimerSeguimento="";
+        var observacionesSegundoSeguimento="";
+        var observacionesTerceroSeguimento="";
         tem.push({ text: "ACTIVIDAD", style: 'row_table' }, {})
         while (contador != 21) {
             tem.push({ text: contador, style: 'row_table' })
@@ -4013,7 +4017,6 @@ module.exports = {
         var contadorSemanas = 1;
         var fechaSemanaComparar = 0;
         plan.map((actividad_general) => {
-
             actividad_general.subactividades.map((subactividad) => {
                 subactividad.tareas.map((tarea) => {
                     var tem = []
@@ -4021,7 +4024,6 @@ module.exports = {
                     if (tarea.fecha_entrega > fechaSemanaComparar) {
                         contadorSemanas++
                     }
-
                     if (tarea.fecha_entrega <= seguimientos[0]) {
                         //primer seguimiento
                         var contador = 1;
@@ -4039,11 +4041,24 @@ module.exports = {
                         var contador = 1;
                         tem2.push({ text: " ", style: 'row_table' }, { text: "R", style: 'row_table' })
                         while (contador != 21) {
-                            tem2.push({ text: " ", style: 'row_table' })
+                            if (contadorSemanas == contador && tarea.estado_revision_semanal==="aprobado"  ) {
+                                tem2.push({ text: "///"})
+                            } else{
+                                tem2.push({ text: " ", style: 'row_table' })
+
+                            }
                             contador++
                         }
 
                         tablaCronograma.push(tem2)
+
+                        tarea.observaciones.map((observacion)=>{
+                            if(observacion.tipo_observacion!=="plan_de_trabajo" && !observacion.estado){
+                                  observacionesPrimerSeguimento+=tarea.id_orden+".-"+tarea.tarea+": " +observacion.observacion;
+                               
+                            }
+
+                        })
 
                     } else if (tarea.fecha_entrega > seguimientos[0] && tarea.fecha_entrega <= seguimientos[1]) {
                         //segundo seguimiento
@@ -4063,13 +4078,24 @@ module.exports = {
                         var contador = 1;
                         tem2.push({ text: " ", style: 'row_table' }, { text: "R", style: 'row_table' })
                         while (contador != 21) {
-                            tem2.push({ text: " ", style: 'row_table' })
+                            if (contadorSemanas == contador && tarea.estado_revision_semanal==="aprobado"  ) {
+                                tem2.push({ text: "///"})
+                            } else{
+                                tem2.push({ text: " ", style: 'row_table' })
+
+                            }
+                           
                             contador++
                         }
 
                         tablaCronograma.push(tem2)
 
+                        tarea.observaciones.map((observacion)=>{
+                            if(observacion.tipo_observacion!=="plan_de_trabajo" && !observacion.estado){
+                                observacionesSegundoSeguimento+=tarea.id_orden+".-"+tarea.tarea+": " +observacion.observacion;
 
+                            }
+                        })
                     } else if (tarea.fecha_entrega > seguimientos[1]) {
                         //tercer  seguimiento
 
@@ -4090,12 +4116,25 @@ module.exports = {
                         var contador = 1;
                         tem2.push({ text: " ", style: 'row_table' }, { text: "R", style: 'row_table' })
                         while (contador != 21) {
-                            tem2.push({ text: " ", style: 'row_table' })
+                            
+                            if (contadorSemanas == contador && tarea.estado_revision_semanal==="aprobado"  ) {
+                                tem2.push({ text: "///"})
+                            } else{
+                                tem2.push({ text: " ", style: 'row_table' })
+
+                            }
+                           
                             contador++
                         }
 
                         tablaCronograma.push(tem2)
-
+                        tarea.observaciones.map((observacion)=>{
+                            
+                            if(observacion.tipo_observacion!=="plan_de_trabajo" && !observacion.estado){
+                                observacionesTerceroSeguimento+=tarea.id_orden+".-"+tarea.tarea+": " +observacion.observacion+"\n";
+                               
+                            }
+                        })
 
                     }
 
@@ -4108,8 +4147,9 @@ module.exports = {
             nombreJefeDepartamento = docente.titulo + " " + docente.nombre + " " + docente.ap_paterno + " " + docente.ap_paterno
 
         })
-
-        var docDefinition = {
+        
+      
+var docDefinition = {
             pageSize: 'A4',
             pageOrientation: 'landscape',
             pageMargins: [40, 100, 40, 60],
@@ -4150,7 +4190,7 @@ module.exports = {
                     table: {
                         headerRows: 0,
                         body: [
-                            [{ alignment: 'left', style: 'subtitulo', text: "ESTUDIANTE: ", bold: true }, { alignment: 'left', style: 'subtitulo', text: proyecto.anteproyecto.alumno.nombre + " " + proyecto.anteproyecto.alumno.ap_paterno + " " + proyecto.anteproyecto.alumno.ap_materno, decoration: 'underline' },
+                            [{ alignment: 'left', style: 'subtitulo', text: "ESTUDIANTE: ", bold: true }, { alignment: 'left', style: 'subtitulo', text: proyecto.anteproyecto.alumno.nombre.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_materno.toUpperCase(), decoration: 'underline' },
                             { alignment: 'left', style: 'subtitulo', text: "No. DE CONTROL: ", bold: true }, { alignment: 'left', text: proyecto.anteproyecto.alumno.no_control, style: 'subtitulo', decoration: 'underline' },
                             ]
 
@@ -4163,7 +4203,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `NOMBRE DEL PROYECTO: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.nombre, style: 'subtitulo', decoration: 'underline' },
+                        { text: proyecto.anteproyecto.nombre.toUpperCase(), style: 'subtitulo', decoration: 'underline' },
                     ]
                 },
                 {
@@ -4172,7 +4212,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `EMPRESA: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_externo.empresa.nombre, style: 'subtitulo', decoration: 'underline' }
+                        { text: proyecto.anteproyecto.asesor_externo.empresa.nombre.toUpperCase(), style: 'subtitulo', decoration: 'underline' }
                     ]
                 },
                 {
@@ -4181,7 +4221,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `ASESOR EXTERNO: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_externo.nombre, style: 'subtitulo', decoration: 'underline' }
+                        { text: proyecto.anteproyecto.asesor_externo.nombre.toUpperCase(), style: 'subtitulo', decoration: 'underline' }
                     ]
                 },
                 {
@@ -4190,7 +4230,7 @@ module.exports = {
                     width: '*',
                     text: [
                         { text: `ASESOR INTERNO: `, style: 'subtitulo', bold: true },
-                        { text: proyecto.anteproyecto.asesor_interno.titulo + " " + proyecto.anteproyecto.asesor_interno.nombre + " " + proyecto.anteproyecto.asesor_interno.ap_paterno + " " + proyecto.anteproyecto.asesor_interno.ap_materno, style: 'subtitulo', decoration: 'underline' }
+                        { text: proyecto.anteproyecto.asesor_interno.titulo.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.nombre.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_materno.toUpperCase(), style: 'subtitulo', decoration: 'underline' }
                     ]
                 },
                 {
@@ -4216,14 +4256,24 @@ module.exports = {
 
                     alignment: 'left',
                     table: {
-                        widths: [300, '*', '*', '*', '*', '*'],
+                        widths: [300, 145,140,140],
                         headerRows: 0,
                         body: [
                            
-                        [{ text: "Observaciones", style: 'subititulo' }, {}, {}, {}, {}, {}],
-                        [{ text: proyecto.anteproyecto.asesor_interno.titulo + " " + proyecto.anteproyecto.asesor_interno.nombre + " " + proyecto.anteproyecto.asesor_interno.ap_paterno + " " + proyecto.anteproyecto.asesor_interno.ap_materno + "\nAsesor interno", style: 'subtitulo' }, {}, {}, {}, {}, {}],
-                        [{ text: proyecto.anteproyecto.alumno.nombre + " " + proyecto.anteproyecto.alumno.ap_paterno + " " + proyecto.anteproyecto.alumno.ap_materno + "\nEstudiante", style: 'subititulo' }, {}, {}, {}, {}, {}],
-                        [{ text: nombreJefeDepartamento + "\nJefe Depto.", style: 'subititulo' }, {}, {}, {}, {}, {}]
+                        [{ text: "Observaciones", style: 'subtitulo' }, {
+                            
+                           text: observacionesPrimerSeguimento,style: 'row_table',alignment: 'justify'
+                            
+                            
+                        }, {
+                            text: observacionesSegundoSeguimento ,style: 'row_table', alignment: 'justify' 
+                        }, 
+                        {
+                            text: observacionesTerceroSeguimento,style: 'row_table',alignment: 'justify'
+                        }],
+                        [{ text: proyecto.anteproyecto.asesor_interno.titulo.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.nombre.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.asesor_interno.ap_materno.toUpperCase() + "\nAsesor interno", style: 'subtitulo' }, {}, {}, {}],
+                        [{ text: proyecto.anteproyecto.alumno.nombre.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_paterno.toUpperCase() + " " + proyecto.anteproyecto.alumno.ap_materno.toUpperCase() + "\nEstudiante", style: 'subtitulo' }, {}, {}, {}],
+                        [{ text: nombreJefeDepartamento.toUpperCase() + "\nJefe Depto.", style: 'subtitulo' }, {}, {}, {}]
                         ]
 
                     }
@@ -4249,6 +4299,7 @@ module.exports = {
                     fontSize: 9,
                     alignment: 'center'
                 },
+               
                 firma: {
                     fontSize: 10,
                     color: '#505962',

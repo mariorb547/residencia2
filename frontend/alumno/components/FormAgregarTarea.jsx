@@ -42,7 +42,7 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Tarea">
                                 {getFieldDecorator('tarea', {
-                                    rules: [{ required: true, message: 'Tarea es obligatotia.' }, {pattern: new RegExp("^[A-Z].*"), message: 'Tarea debe iniciar con una letra mayúscula.'}]
+                                    rules: [{ required: true, message: 'Tarea es obligatotia.' }, { pattern: new RegExp("^[A-Z].*"), message: 'Tarea debe iniciar con una letra mayúscula.' }]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Tarea" />
@@ -53,18 +53,26 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Horas">
                                 {getFieldDecorator('horas', {
-                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 1, 
+                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 1,
 
                                 })(
-                                    <InputNumber min={1} max={60}  onChange={onChange} />
+                                    <InputNumber min={1} placeholder="Horas" max={60} onChange={onChange} />
                                 )
                                 }
-                            </FormItem>
+                                Seleccione de un rango de 1 - 60 horas
+                                                             </FormItem>
                         </Col>
                         <Col span={20}>
-                            <FormItem label="Entregable">
+                            <FormItem label={(
+                                <span>
+                                    Entregable&nbsp;
+                                    <Tooltip title="Documento escrito o digital que respalda el cumplimiento de la tarea">
+                                        <Icon type="question-circle-o" />
+                                    </Tooltip>
+                                </span>
+                            )}>
                                 {getFieldDecorator('entregable', {
-                                    rules: [{ required: true, message: 'Entregable es obligatoria..' }, {pattern: new RegExp("^[A-Z].*"), message: 'Entregable debe iniciar con una letra mayúscula.'}]
+                                    rules: [{ required: true, message: 'Entregable es obligatoria..' }, { pattern: new RegExp("^[A-Z].*"), message: 'Entregable debe iniciar con una letra mayúscula.' }]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Entregable" />
@@ -85,24 +93,24 @@ const CreateFormAddTarea = Form.create()(
                                 {getFieldDecorator('fecha_entrega', {
                                     rules: [{ required: true, message: 'La fecha de asesoría es obligatoria.' }]
                                 })(
-                                <DatePicker
-                                format="ll"
-                                    dateRender={current => {
-                                      var style = {};
-                                      if (current.date() === 1) {
-                                        style.border = '1px solid #1890ff';
-                                        style.borderRadius = '50%';
-                                      }
-                                      return (
-                                        <div className="ant-calendar-date" style={style}>
-                                          {current.date()}
-                                        </div>
-                                      );
-                                    }}
-                                  />)}
-                                
+                                    <DatePicker
+                                        format="ll"
+                                        dateRender={current => {
+                                            var style = {};
+                                            if (current.date() === 1) {
+                                                style.border = '1px solid #1890ff';
+                                                style.borderRadius = '50%';
+                                            }
+                                            return (
+                                                <div className="ant-calendar-date" style={style}>
+                                                    {current.date()}
+                                                </div>
+                                            );
+                                        }}
+                                    />)}
+
                             </FormItem>
-                          
+
                         </Col>
 
                     </Row>

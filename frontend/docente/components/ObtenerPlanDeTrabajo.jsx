@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select, Table, Divider, Row, Popconfirm, message, Button, Col, Badge, Icon, Switch } from 'antd';
+import { Select, Table, Divider, Row, Popconfirm, message, Button, Col, Badge, Icon, Switch,Tag } from 'antd';
 import '../../styling.css';
 
 import axios from 'axios';
@@ -57,42 +57,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
   }
 
-  /*obtenerTareas =()=>{
-  
-    let tareasData=[]
-   
-               this.state.dataSource_subactividades.map((subactividad)=>{
-                      
-                    axios.get(`/api/plan_de_trabajo/${subactividad.id}/get_tareas`)
-                    .then(res =>{
-                    
-                        if(res.status === 200){
-                            //se recorre los resultados para agregarlos a un arreglo con el key unico
-                            res.data.map((tarea) => {
-                                tareasData.push( {
-                                    key: uuid.v1(),
-                                    id:tarea.id,
-                                    id_subactividad:tarea.id_subactividad,
-                                    id_orden:tarea.id_orden,
-                                    tarea: tarea.tarea,
-                                    horas:tarea.horas,
-                                    entregable:tarea.entregable,
-                                    fecha_entrega:tarea.fecha_entrega,
-                                    estado_revision_plan:tarea.estado_revision_plan                         
-                                })
-                              
-                            })
-                            this.state({
-                              dataSource_tareas:tareasData,visibleAddObservacion:false
-                            })
-                       }
-                    })
-                
-               }) 
-
-              
-  }*/
-  obtenerTareas = () => {
+   obtenerTareas = () => {
 
     var observacionData = []
     var tareas = []
@@ -131,10 +96,13 @@ export default class ObtenerPlanDeTrabajo extends Component {
     })
   }
 
-  visibleAddObservacion = () => {
+  ocultarAddObservacion = () => {
     this.setState({ visibleAddObservacion: false })
   }
 
+  ocultarShowObservacion = () => {
+    this.setState({ visibleShowObservacion: false })
+  }
 
   obtenerSubactividades = () => {
     let data_actividad_general = []
@@ -210,111 +178,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
       }
     })
-    /*
-        axios.get(`/api/plan_de_trabajo/${this.state.proyecto.id}/get_actividad_general`)
-        .then(res =>{
-            if(res.status === 200){
-              
-              const proyectoPlan = res.data.map((actividad_general, index) => {
-                               //let dataSubactividades=[];
-          axios.get(`/api/plan_de_trabajo/${actividad_general.id}/get_subactividades`)
-          .then(res1 =>{
-          
-              if(res1.status === 200){
-                  //se recorre los resultados para agregarlos a un arreglo con el key unico
-                  
-                  res1.data.map((actividad, index) => {
-                
-                      subData.push({
-                      key: uuid.v1(),
-                      id:actividad.id,
-                      id_orden:actividad.id_orden,
-                      id_actividad_general:actividad.id_actividad_general,
-                      actividad: actividad.actividad,                           
-                      })
-    
-                      axios.get(`/api/plan_de_trabajo/${actividad.id}/get_tareas`)
-                        .then(res =>{
-                        
-                            if(res.status === 200){
-                                //se recorre los resultados para agregarlos a un arreglo con el key unico
-                                res.data.map((tarea) => {
-                                    tareasData.push({
-                                      key: uuid.v1(),
-                                      id:tarea.id,
-                                      id_subactividad:tarea.id_subactividad,
-                                      id_orden:tarea.id_orden,
-                                      tarea: tarea.tarea,
-                                      horas:tarea.horas,
-                                      entregable:tarea.entregable,
-                                      fecha_entrega:tarea.fecha_entrega,
-                                      estado_revision_plan:tarea.estado_revision_plan                         
-                                  })
-    
-                                      axios.get(`/api/plan_de_trabajo/${tarea.id}/${"plan_de_trabajo"}/get_observaciones`)
-                                      .then(res =>{
-                                      
-                                          if(res.status === 200){
-                                           
-                                              //se recorre los resultados para agregarlos a un arreglo con el key unico
-                                             res.data.map((observacion) => {
-                                              observacionData.push({
-                                                    key: uuid.v1(),
-                                                    id:observacion.id,
-                                                    id_tarea:observacion.id_tarea,
-                                                    observacion:observacion.observacion,
-                                                    estado:observacion.estado,
-                                                    id_subactividad:observacion.tareas.subactividades.id,
-                                                    id_actividad_general:observacion.tareas.subactividades.actividad_general.id                           
-                                                })
-                                              })
-                                              this.setState({
-                                                dataSource_observaciones:observacionData
-                  
-                                              })
-                                          }
-                                          
-                                    })
-                                    
-                                })
-                               
-                            }
-                      })
-                    
-                          
-                      this.setState({
-                            dataSource_tareas:tareasData
-                      })
-    
-                  })
-    
-              }
-          })
-                    return{
-                        key: uuid.v1(),
-                        id:actividad_general.id,
-                        id_proyecto:actividad_general.id_proyecto,
-                        id_orden:actividad_general.id_orden,
-                        actividad: actividad_general.actividad,
-                        objetivo: actividad_general.objetivo,
-                        entregable: actividad_general.entregable,
-                       
-                    }
-                })
-               
-               
-                this.setState({
-                    
-                   dataSource_actividad_general:proyectoPlan
-                    
-                })
-                
-            }
-          })
-       
-    
-             
-         this.setState({  dataSource_subactividades:subData })*/
+  
   }
 
 
@@ -390,36 +254,6 @@ export default class ObtenerPlanDeTrabajo extends Component {
       }
 
 
-
-      /* axios.get(`/api/plan_de_trabajo/${tarea.id}/${"plan_de_trabajo"}/get_observaciones`)
-       .then(res =>{
-       
-           if(res.status === 200){
-            
-                //se recorre los resultados para agregarlos a un arreglo con el key unico
-                res.data.map((observacion) => {
-                  observacionData.push({
-                        key: uuid.v1(),
-                        id:observacion.id,
-                        id_tarea:observacion.id_tarea,
-                        observacion:observacion.observacion,
-                        estado:observacion.estado,
-                        id_subactividad:observacion.tareas.subactividades.id,
-                        id_actividad_general:observacion.tareas.subactividades.actividad_general.id                           
-                    })
-                      this.setState({
-                        dataSource_observaciones:observacionData,
-                                    
-                      })
-                })
-                  
-                //se actualizan las tareas para cambiar el color en la tabla 
-                this.obtenerTareas()
-
-           }
-           
-     })*/
-
     })
   }
 
@@ -450,8 +284,38 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
 
 
-  onChangeEstado = (id, estado) => {
 
+  
+  onChangeEstadoShowObservacion = (id, estado) => {
+    console.log("id "+id+ " estado " + estado)
+      if (estado) {
+        estado = "aprobado"
+      } else {
+        estado = "no_aprobado"
+      }
+      axios.post('/api/plan_de_trabajo/update_estado_tarea', {
+        id_tarea: id,
+        estado: estado,
+        tipo_observacion: "plan_de_trabajo",
+  
+      }).then((res) => {
+        // console.log(res)
+        if (res.status === 200) {
+          message.success("Estado actializado")
+          //se obtiene las tareas
+          this.obtenerTareas()
+          //se verifica que el total de las tareas esten aprobadas
+  
+        } else {
+          message.error("¡No se puede actualizar el estado! la tarea tiene observaciones pendientes")
+          //se recargan las tareas para que la tabla regrese el Switch
+  
+        }
+      }
+      )
+    }
+  onChangeEstado = (id, estado) => {
+  console.log("id "+id+ " estado " + estado)
     if (estado) {
       estado = "aprobado"
     } else {
@@ -488,8 +352,8 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
         axios.post('/api/plan_de_trabajo/notificacion_observaciones_plan', {
           correo: this.state.proyecto.anteproyecto.alumno.usuario.correo,
-          mensaje: "Para continuar con el proceso de residencia debe descargar el plan de trabjo, recolectar las firmas correspondientes y adjuntar nuvamente el plan de trabjo al sistema",
-          subject: "Estimado residente se le notifica que su plan de trabajo ha sido aprobado en su totalidad"
+          mensaje: " Estimado residente se le notifica que su plan de trabajo ha sido aprobado en su totalidad.\nPara continuar con el proceso de residencia debe descargar el plan de trabjo, recolectar las firmas correspondientes y adjuntar nuvamente el plan de trabjo al sistema",
+          subject: "Notificación de plan de trabajo autorizado"
         }).then((res) => {
           // console.log(res)
           if (res.status === 200) {
@@ -523,6 +387,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
   }
 
+ 
   expandedRowRenderSubactividades = (id_actividad_general) => {
 
     let subactividades_filter = this.state.dataSource_subactividades;
@@ -559,7 +424,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
     ];
 
     return (
-
+      
       <Table
         columns={columns}
         dataSource={subactividades_filter}
@@ -600,7 +465,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
         dataIndex: 'estado_revision_plan',
         key: 'estado_revision_plan',
         render: (text, record) => (
-          <Switch onChange={(check) => this.onChangeEstado(record.id, check)} defaultChecked={this.comprobarEstado(record.estado_revision_plan)} checkedChildren="Aprobada" unCheckedChildren={<Icon type="cross" />} />
+          <Switch disabled={record.estado_revision_plan === "aprobado" ? true : false} onChange={(check) => this.onChangeEstado(record.id, check)} defaultChecked={this.comprobarEstado(record.estado_revision_plan)} checkedChildren="Aprobada" unCheckedChildren={<Icon type="cross" />} />
         )
       },
       {
@@ -612,7 +477,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
               <Row>
                 <div>
                   <Popconfirm title="¿Seguro de agregar una nueva observación?" onConfirm={() => this.showAddObservacion(record.id, "plan_de_trabajo")}>
-                    <Button type={"primary"} key="submit" icon="plus">
+                    <Button disabled={record.estado_revision_plan === "aprobado" ? true : false} type={"primary"} key="submit" icon="plus">
                       Observación
                     </Button>
                   </Popconfirm>
@@ -627,7 +492,7 @@ export default class ObtenerPlanDeTrabajo extends Component {
                       return !solucion.estado && solucion.id_tarea === record.id && solucion.tipo_observacion === "plan_de_trabajo"
                     }).length} >
 
-                      <Button type={"primary"} onClick={() => this.showObservacion(record.id, "plan_de_trabajo")} >Ver observaciones</Button>
+                      <Button disabled={record.estado_revision_plan === "aprobado" ? true : false} type={"primary"} onClick={() => this.showObservacion(record.id, "plan_de_trabajo")} >Ver observaciones</Button>
                     </Badge>
                   </span>
                 </div>
@@ -642,13 +507,37 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
 
     return (
-      <Table
+      <div>
+        
+        <Row>
+            <Col span={8}>
+              <div>
+                <Badge status="processing" />
+                <Tag color="#979997">En revisión</Tag>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div>
+                <Badge status="processing" />
+                <Tag color="#00CC00">Aprobado</Tag>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div>
+                <Badge status="processing" />
+                <Tag color=" #FF1A1A">No aprobado</Tag>
+              </div>
+            </Col>
+          </Row>
+        <Table
         rowClassName={(record, index) => record.estado_revision_plan === 'revision' ? 'ant-table-content-gris' : record.estado_revision_plan === 'aprobado' ? 'ant-table-content-verde' : 'ant-table-content-rojo'}
         columns={columns}
         dataSource={tareas_filter}
         pagination={false}
 
       />
+      </div>
+      
     )
   }
 
@@ -688,6 +577,15 @@ export default class ObtenerPlanDeTrabajo extends Component {
 
     return (
       <div>
+          <h3>El sistema no permitirá correcciones una vez que el plan de trabajo haya sido autorizado por el asesor interno</h3>
+         <div style={{ paddingLeft: "95%" }} >
+            <Badge count={this.state.dataSource_observaciones.filter(solucion => {
+              return !solucion.estado && solucion.tipo_observacion === "plan_de_trabajo"
+            }).length} >
+              <img src="/img/notification.png" alt="notificacion" height="30px" />
+            </Badge>
+          </div>
+        
         <Table
           bordered title={() => 'Actividades generales del plan de trabajo'}
           dataSource={this.state.dataSource_actividad_general}
@@ -698,8 +596,8 @@ export default class ObtenerPlanDeTrabajo extends Component {
           scroll={{ x: 1000 }}
         />
 
-        <FormAddObservacion visible={this.state.visibleAddObservacion} actulizarCantidadObservacionesAddObservacion={this.actulizarCantidadObservacionesAddObservacion} tipo={this.state.tipo_observacion} id_tarea={this.state.id_tarea} usuario={this.state.usuario} rutaUpdateObservacion={'/api/proyecto/updateEstadoTareaAddObservacionPlan'} ocultarAddObservacion={this.visibleAddObservacion} />
-        <FormShowObservacion visible={this.state.visibleShowObservacion} actulizarCantidadObservaciones={this.actulizarCantidadObservaciones} tipo={this.state.tipo_observacion} id_tarea={this.state.id_tarea} />
+        <FormAddObservacion visible={this.state.visibleAddObservacion} actulizarCantidadObservacionesAddObservacion={this.actulizarCantidadObservacionesAddObservacion} tipo={this.state.tipo_observacion} id_tarea={this.state.id_tarea} usuario={this.state.usuario} rutaUpdateObservacion={'/api/proyecto/updateEstadoTareaAddObservacionPlan'} ocultarAddObservacion={this.ocultarAddObservacion}  />
+        <FormShowObservacion visible={this.state.visibleShowObservacion} actulizarCantidadObservaciones={this.actulizarCantidadObservaciones} tipo={this.state.tipo_observacion} id_tarea={this.state.id_tarea}  onChangeEstadoTarea={this.onChangeEstadoShowObservacion} ocultarShowObservacion={this.ocultarShowObservacion}/>
 
       </div>
 

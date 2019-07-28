@@ -66,7 +66,7 @@ export default class FormAddObservaciones extends Component{
         const form = this.form;
         form.resetFields();
         this.setState({ visible: false });
-        this.state.ocultarAddObservacion()
+        this.state.ocultarAddObservacion();
       
     }
     handleCreate = () => {

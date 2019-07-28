@@ -621,6 +621,15 @@ module.exports =  (app, express, passport) => {
     router.route('/plan_de_trabajo/:id/get_cronograma')
     .get(isAuth,PlanDeTrabajoController.getCronograma);
 
+    router.route('/plan_de_trabajo/:id_proyecto/max_actividades_generales')
+    .get(isAuth,PlanDeTrabajoController.maxActividadesGenerales);
+
+    router.route('/plan_de_trabajo/:id_proyecto/max_subactividades')
+    .get(isAuth,PlanDeTrabajoController.maxSubactividades);
+
+    router.route('/plan_de_trabajo/:id_proyecto/max_tareas')
+    .get(isAuth,PlanDeTrabajoController.maxTareas);
+
     router.route('/plan_de_trabajo/:id_proyecto/get_actividad_general')
         .get(isAuth,PlanDeTrabajoController.findPlanDeTrabajoAlumno);
 
@@ -662,6 +671,8 @@ module.exports =  (app, express, passport) => {
     router.route('/plan_de_trabajo/notificacion_observaciones_plan')
         .post(isAuth,PlanDeTrabajoController.notificacionObservacionesPlan);
      
+    router.route('/plan_de_trabajo/updateProrrogaPlanTrabajo')
+        .post(isAuth,PlanDeTrabajoController.updateProrrogaPlanTrabajo);   
     
     router.route('/alumno/file_evidencia/:id_tarea')
         .post(isAuth, isResidente, RevisionSemanalController.addFileEvidencia)

@@ -25,9 +25,8 @@ export default class ProyectoDeResidencia extends Component {
             visibleRegistrarActividadGeneral: false,
             visiblePlanDeTrabajo: false,
             disabledDescargarPlan: false,
-            visibleAdjuntarPlan: false
-
-        }
+            visibleAdjuntarPlan: false,
+            }
     }
     componentWillReceiveProps(nextProps) {
         this.setState({
@@ -146,11 +145,11 @@ export default class ProyectoDeResidencia extends Component {
                             <a style={{ color: '#4da1ff' }} href="/plantillas/plan_de_trabajo.docx">Plantilla de plan de trabajo <Icon type="cloud-download" /></a>
                         </Col>
                         
-                        <Col xs={24} lg={4} style={{padding:2}}>
-                            <Button icon="plus" disabled={!this.state.disabledDescargarPlan} type="primary" onClick={this.showAddActividadGeneral}>Registrar plan de trabajo</Button>
+                        <Col xs={24} lg={4} style={{padding:2, display:this.state.disabledDescargarPlan?"block":"none"}}>
+                            <Button  icon="plus"  type="primary" onClick={this.showAddActividadGeneral}>Registrar plan de trabajo</Button>
                         </Col>
-                        <Col xs={24} lg={4} style={{padding:2}}>
-                            <Button icon="eye" type="primary" onClick={this.showPlanDeTrabajo}>Visulizar plan de trabajo</Button>
+                        <Col xs={24} lg={4} style={{padding:2,display:this.state.disabledDescargarPlan?"block":"none"}}>
+                            <Button icon="eye" type="primary"    onClick={this.showPlanDeTrabajo}>Visulizar plan de trabajo</Button>
                         </Col>
                         <Col xs={24} lg={4} style={{padding:2}}>
                             <a href={`/api/plan_de_trabajo/${this.state.proyecto.id}/generar_plan_de_trabajo`} target="_blank"><Button icon="file-pdf" disabled={this.state.disabledDescargarPlan} type="primary">Descargar plan de trabajo</Button></a>
@@ -180,6 +179,7 @@ export default class ProyectoDeResidencia extends Component {
                         <a style={{ color: '#C22121' }} href={`/api/solicitud/${proyecto.anteproyecto.id_alumno}/oficio_prorroga.docx`} target="_blank"> Oficio de prorroga <Icon type="file-word" style={{ color: '#4da1ff' }} /></a>
                     </Item>
                 </Row>
+                
                 <FormAddActividadGeneral obtenerSubactividades={this.obtenerSubactividades} visible={visibleRegistrarActividadGeneral} proyectoActividadGeneral={proyecto} visibleRegistrarSubactividad={false} hideAddActividadGenal={this.hideAddActividadGenal} />
                 <FormPlanDeTrabajo visible={visiblePlanDeTrabajo} proyectoActividadGeneral={proyecto} visibleRegistrarSubactividad={false} />
                 <div>

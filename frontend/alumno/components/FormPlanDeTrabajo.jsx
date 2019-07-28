@@ -122,35 +122,10 @@ export default class FormPlanDeTrabajo extends Component {
                 >
                     <Form layout="vertical">
                         <Row>
-
-                            <Col span={8}>
-                                <div>
-                                    <Badge status="processing" />
-                                    <Tag color="#979997">En revisión</Tag>
-                                </div>
-                            </Col>
-                            <Col span={8}>
-                                <div>
-                                    <Badge status="processing" />
-                                    <Tag color="#00CC00">Aprobado</Tag>
-                                </div>
-                            </Col>
-                            <Col span={8}>
-                                <div>
-                                    <Badge status="processing" />
-                                    <Tag color=" #FF1A1A">No aprobado</Tag>
-                                </div>
-                            </Col>
-
-
                             <Col span={24}>
                                 {this.state.renderPlanDeTrabajo}
-
                             </Col>
-
                         </Row>
-
-
                     </Form>
                 </Modal>
 

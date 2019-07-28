@@ -15,7 +15,7 @@ import ObtenerPlanDeTrabajo from './ObtenerPlanDeTrabajo.jsx';
 
 const CreateFormAddSubactividad = Form.create()(
     (props => {
-        const { visible1, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo } = props;
+        const { visible1, onCancel, onCreate, form, numeroOrden } = props;
         const { getFieldDecorator } = form;
 
         function onChange(value) {
@@ -43,12 +43,12 @@ const CreateFormAddSubactividad = Form.create()(
             >
                 <Form layout="vertical">
                     <Row>
-
-
+                        <p>{numeroOrden}</p>
+                        <br></br>
                         <Col span={20}>
                             <FormItem label="Subactividad">
                                 {getFieldDecorator('subactividad', {
-                                    rules: [{ required: true, message: 'La subactividad es requerida.' },{pattern: new RegExp("^[A-Z].*"), message: 'La subactividad debe iniciar con una letra mayúscula.'}]
+                                    rules: [{ required: true, message: 'La subactividad es requerida.' }, { pattern: new RegExp("^[A-Z].*"), message: 'La subactividad debe iniciar con una letra mayúscula.' }]
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Subactividad" />
                                 )
@@ -71,7 +71,7 @@ const CreateFormAddSubactividad = Form.create()(
 
 const CreateFormAddTarea = Form.create()(
     (props => {
-        const { visibleTarea, onCancel, onCreate, form, nuevaSubactividad } = props;
+        const { visibleTarea, onCancel, onCreate, form, nuevaSubactividad,numeroOrdenTarea } = props;
         const { getFieldDecorator } = form;
 
         function onChange(value) {
@@ -93,10 +93,12 @@ const CreateFormAddTarea = Form.create()(
                 centered
             ><Form layout="vertical">
                     <Row>
+                    <p>{numeroOrdenTarea}</p>
+                        <br></br>
                         <Col span={20}>
                             <FormItem label="Tarea">
                                 {getFieldDecorator('tarea', {
-                                    rules: [{ required: true, message: 'La tarea es requira.' },{ pattern: new RegExp("^[A-Z].*"), message: 'La tarea debe iniciar con una letra mayúscula.' }]
+                                    rules: [{ required: true, message: 'La tarea es requira.' }, { pattern: new RegExp("^[A-Z].*"), message: 'La tarea debe iniciar con una letra mayúscula.' }]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Tarea" />
@@ -107,18 +109,26 @@ const CreateFormAddTarea = Form.create()(
                         <Col span={20}>
                             <FormItem label="Horas">
                                 {getFieldDecorator('horas', {
-                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 1, 
+                                    rules: [{ required: true, message: 'Horas es obligatoria..' }], InitialValue: 1,
 
                                 })(
-                                    <InputNumber id="horas" min={1} max={60} onChange={onChange} />
+                                    <InputNumber id="horas" placeholder="Horas" min={1} max={60} onChange={onChange} />
                                 )
                                 }
+                                Seleccione de un rango de 1 - 60 horas
                             </FormItem>
                         </Col>
                         <Col span={20}>
-                            <FormItem label="Entregable">
+                            <FormItem label={(
+                                <span>
+                                    Entregable&nbsp;
+                                    <Tooltip title="Documento escrito o digital que respalda el cumplimiento de la tarea">
+                                        <Icon type="question-circle-o" />
+                                    </Tooltip>
+                                </span>
+                            )}>
                                 {getFieldDecorator('entregable', {
-                                    rules: [{ required: true, message: 'Entregable es obligatoria.' }, {pattern: new RegExp("^[A-Z].*"),message: 'El entregable debe iniciar con una letra mayúscula.'}]
+                                    rules: [{ required: true, message: 'Entregable es obligatoria.' }, { pattern: new RegExp("^[A-Z].*"), message: 'El entregable debe iniciar con una letra mayúscula.' }]
 
                                 })(
                                     <Input prefix={<Icon type="laptop" style={{ fontSize: 12 }} />} placeholder="Entregable" />
@@ -159,25 +169,89 @@ export default class FormAddSubactividad extends Component {
         this.state = {
             visible1: props.visible1,
             proyecto: props.proyecto,
+            tipoRegistro: props.tipoRegistro,
             visibleRegistrarTarea: props.visibleRegistrarTarea,
             visibleTarea: false,
             obtenerSubactividades: props.obtenerSubactividades,
-            hideAddActividadGenal:props.hideAddActividadGenal
+            hideAddActividadGenal: props.hideAddActividadGenal,
+            numeroOrden: null,
+            numeroOrdenTarea:null
 
 
         }
 
     }
     componentWillReceiveProps(nextProps) {
-        const { visible1, proyecto, visibleRegistrarTarea,hideAddActividadGenal } = nextProps;
+        const { visible1, proyecto, visibleRegistrarTarea, hideAddActividadGenal, numeroOrden,numeroOrdenTarea,tipoRegistro } = nextProps;
         this.setState({
             visible1,
             proyecto,
             visibleRegistrarTarea,
-            hideAddActividadGenal
+            hideAddActividadGenal,
+            numeroOrden,
+            tipoRegistro,
+            numeroOrdenTarea
+        })
+         
+       
+        if (tipoRegistro==="nueva" && visible1 || this.state.visibleTarea) {
+            this.getMaxSubactividades(proyecto);
+            this.getMaxTareas(proyecto);
+
+        }
+        
+
+    }
+
+    getMaxSubactividades = (proyecto) => {
+        axios.get(`/api/plan_de_trabajo/${proyecto.id}/max_subactividades`).then(res => {
+            if (res.status == 200) {
+
+                this.setState({
+                    numeroOrden: "Orden de la ultina subactividad registrada " + res.data
+
+                })
+            } else {
+                Modal.error({
+                    title: 'Error ',
+                    content: (
+                        <div>
+                            {res.data.errores}
+                        </div>
+                    ), onOk() { },
+                })
+            }
         })
     }
 
+    getMaxTareas = (proyecto) => {
+        axios.get(`/api/plan_de_trabajo/${proyecto.id}/max_tareas`).then(res => {
+            if (res.status == 200) {
+                let idOrdenTarea;
+           console.log(".....................................................")
+           console.log(JSON.stringify(res.data))
+            res.data.map((id)=>{
+                idOrdenTarea=id.id_orden;
+                console.log("id"+id.id_orden)
+            })
+           console.log(".....................................................")
+
+                this.setState({
+                    numeroOrdenTarea: "Orden de la ultina tareas registrada " + idOrdenTarea
+
+                })
+            } else {
+                Modal.error({
+                    title: 'Error ',
+                    content: (
+                        <div>
+                            {res.data.errores}
+                        </div>
+                    ), onOk() { },
+                })
+            }
+        })
+    }
     showModal = () => {
         this.setState({
             visible1: true,
@@ -190,21 +264,29 @@ export default class FormAddSubactividad extends Component {
     }
     handleCancel = () => {
         const form = this.form;
+        const { proyecto } = this.state
         form.resetFields();
         this.setState({ visible1: false, visibleTarea: false });
-        this.state.hideAddActividadGenal()
+        if (proyecto.id !== undefined) {
+            //si proyecto.id es undefined es porque se añidara una subactivida a una activida general ya existente 
+            this.state.hideAddActividadGenal()
+        }
 
     }
     handleCancelTarea = () => {
         const form = this.form;
+        const { proyecto } = this.state
         form.resetFields();
         this.setState({ visibleTarea: false, visible1: false });
-        this.state.hideAddActividadGenal()
+        if (proyecto.id !== undefined) {
+            //si proyecto.id es undefined es porque se añidara una subactivida a una activida general ya existente 
+            this.state.hideAddActividadGenal()
+        }
 
     }
     handleCreate = () => {
 
-        const { proyecto } = this.state
+        const { proyecto } = this.state;
         const form = this.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -213,15 +295,12 @@ export default class FormAddSubactividad extends Component {
 
             var id_actividad_general;
             var tipo;
-            if (proyecto.id === undefined) {
-                //si proyecto.id es undefined es porque se añidara una subactivida a una activida general ya existente 
-                id_actividad_general = proyecto
-                tipo = "agregar"
-
-            } else {
-                //se agrega una subactividad de forma normal     
+            if (this.state.tipoRegistro === "nueva") {
+                //si se esta capturando una nueva actividad general
                 id_actividad_general = proyecto.id
-                tipo = "nueva"
+            } else {
+                //si se va agregar una subactividad a una actividad general ya existente
+                id_actividad_general = proyecto
 
             }
 
@@ -230,7 +309,7 @@ export default class FormAddSubactividad extends Component {
             axios.post('/api/plan_de_trabajo/addSubactividad', {
                 id_proyecto: id_actividad_general,
                 actividad: this.maysPrimera(values.subactividad),
-                tipo: tipo
+                tipo: this.state.tipoRegistro
             }).then((res) => {
                 // console.log(res)
                 if (res.status === 200) {
@@ -265,24 +344,21 @@ export default class FormAddSubactividad extends Component {
                 return;
             }
             var id_actividad_general;
-            var tipo;
-            if (proyecto.id === undefined) {
-                //si proyecto.id es undefined es porque se añidara una tarea a una subactividad ya existente 
-                id_actividad_general = proyecto
-                tipo = "agregar"
 
-            } else {
-                //se agrega una tarea de forma normal     
+            if (this.state.tipoRegistro === "nueva") {
+                //si se esta capturando una nueva actividad general
                 id_actividad_general = proyecto.id
-                tipo = "nueva"
+            } else {
+                //si se va agregar una subactividad a una actividad general ya existente
+                id_actividad_general = proyecto
 
             }
 
-             // crear post al servidor
+            // crear post al servidor
             axios.post('/api/plan_de_trabajo/addTarea', {
                 id_proyecto: id_actividad_general,
-                tipo: tipo,
-                tarea:this.maysPrimera(values.tarea),
+                tipo: this.state.tipoRegistro,
+                tarea: this.maysPrimera(values.tarea),
                 horas: values.horas,
                 entregable: this.maysPrimera(values.entregable),
                 fecha_entrega: values.fecha_entrega
@@ -292,10 +368,11 @@ export default class FormAddSubactividad extends Component {
                     message.success("Tarea registrada satisfactoriamente")
 
                     form1.resetFields();
-                     
-               
-                document.getElementById("horas").defaultValue=1;
+
+
+                    document.getElementById("horas").defaultValue = 1;
                     this.props.obtenerSubactividades()
+                    
                 } else {
                     Modal.error({
                         title: 'Error al registrar la tarea. Revisar los siguientes campos',
@@ -321,17 +398,18 @@ export default class FormAddSubactividad extends Component {
         this.formTarea = form;
     }
     nuevaSubactividad = () => {
-        this.setState({
+        const { proyecto } = this.state
+        this.getMaxSubactividades(proyecto);
+ this.setState({
             visible1: true,
             visibleTarea: false
         });
-
-
+        
     }
 
-    maysPrimera=(dato)=>{
+    maysPrimera = (dato) => {
         return dato.charAt(0).toUpperCase() + dato.slice(1);
-      }
+    }
     render() {
         const { visibleRegistrarTarea, proyecto } = this.state
 
@@ -344,6 +422,7 @@ export default class FormAddSubactividad extends Component {
                     visible1={this.state.visible1}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    numeroOrden={this.state.numeroOrden}
                 />
 
                 <CreateFormAddTarea
@@ -352,6 +431,7 @@ export default class FormAddSubactividad extends Component {
                     onCancel={this.handleCancelTarea}
                     onCreate={this.handleCreateTarea}
                     nuevaSubactividad={this.nuevaSubactividad}
+                    numeroOrdenTarea={this.state.numeroOrdenTarea}
                 />
 
 

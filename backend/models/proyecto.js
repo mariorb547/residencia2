@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
+    prorroga_fecha_entrega_plan:  {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
+      validate: {
+        isDate: true
+      }
+    },
     filename_cronograma: {
       type: DataTypes.STRING,
       allowNull: true,

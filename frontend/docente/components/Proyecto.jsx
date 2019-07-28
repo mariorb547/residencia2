@@ -32,7 +32,8 @@ export default class Proyecto extends Component {
             visibleEvaluacionAsesorInterno: false,
             criterios_evaluacion: [],
             nombre: null,
-            visiblePlanDeTrabajo:false
+            visiblePlanDeTrabajo: false,
+            disabledDescargarPlan: false
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -48,16 +49,19 @@ export default class Proyecto extends Component {
             seguimientos: [],
             renderSeguimiento: null,
             visibleEvaluacionAsesorInterno: false,
-            visiblePlanDeTrabajo:false
+            visiblePlanDeTrabajo: false,
+
         })
     }
     componentWillMount() {
-      
+
     }
-    componentDidMount(){
+
+    componentDidMount() {
         this.datosDocente();
+        this.statusPlanDeTrabajo();
     }
-    
+
     showAgregarObservacionPlanTrabajo = () => {
         const { proyecto } = this.state;
         this.setState({
@@ -97,7 +101,7 @@ export default class Proyecto extends Component {
         } else {
             const seguimiento = seguimientos.find(seg => seg.id == key);
             alert("id seguimiento")
-        }   
+        }
     }
     onChangeTab = (key) => {
         const { proyecto } = this.state;
@@ -120,40 +124,40 @@ export default class Proyecto extends Component {
                     if (res.status === 200) {
                         // console.warn('a>', res.data);
                         this.setState({
-                            
+
                             seguimientos: res.data,
-                            
+
                         })
                     }
                 })
 
-                 axios.put(`/api/proyecto/seguimientos`, {
-                    id_proyecto: this.state.proyecto.id,
-                    id_periodo: this.state.proyecto.anteproyecto.id_periodo
-                }).then(res => {
-                    if (res.status === 200) {
-                        axios.get(`/api/alumno/${this.state.proyecto.anteproyecto.alumno.id}/_proyecto`)
-                            .then(res1 => {
-        
-                                if (res1.status === 200) {
-                                    this.setState({
-                                        visibleAddObservacion: false,
-                            visibleAddSolucion: false,
-                            visibleEvaluacionAsesorInterno: false,
-                                      //   renderSeguimiento:<SeguimientoProyecto proyecto={res1.data} seguimientos={res.data} />
-                                        
-                                    })
-                                }
-                            })
-        
-                    }
-                })
-            
-           
-                
-        }else if(key==="revisionSemanal"){
-            
-           {/* axios.get(`/api/proyecto/${proyecto.id}/seguimientos`)
+            axios.put(`/api/proyecto/seguimientos`, {
+                id_proyecto: this.state.proyecto.id,
+                id_periodo: this.state.proyecto.anteproyecto.id_periodo
+            }).then(res => {
+                if (res.status === 200) {
+                    axios.get(`/api/alumno/${this.state.proyecto.anteproyecto.alumno.id}/_proyecto`)
+                        .then(res1 => {
+
+                            if (res1.status === 200) {
+                                this.setState({
+                                    visibleAddObservacion: false,
+                                    visibleAddSolucion: false,
+                                    visibleEvaluacionAsesorInterno: false,
+                                    //   renderSeguimiento:<SeguimientoProyecto proyecto={res1.data} seguimientos={res.data} />
+
+                                })
+                            }
+                        })
+
+                }
+            })
+
+
+
+        } else if (key === "revisionSemanal") {
+
+            {/* axios.get(`/api/proyecto/${proyecto.id}/seguimientos`)
                 .then(res => {
                     if (res.status === 200) {
                         // console.warn('a>', res.data);
@@ -171,8 +175,8 @@ export default class Proyecto extends Component {
     }
 
 
-    datosDocente = () =>{
-        const {usuario} = this.state;
+    datosDocente = () => {
+        const { usuario } = this.state;
         axios.get(`/api/docente/informacion/${usuario.id}`).then(res => {
 
             this.setState({
@@ -180,16 +184,46 @@ export default class Proyecto extends Component {
             })
 
         })
-        
+
+    }
+    statusPlanDeTrabajo = () => {
+
+        axios.get(`/api/plan_de_trabajo/${this.state.proyecto.id}/get_actividad_general`)
+            .then(res => {
+                if (res.status === 200) {
+                    //si el plan de tbajo esta vacio 
+                    if (res.data.length == 0) {
+                        this.setState({
+                            disabledDescargarPlan: true
+                        })
+                    }
+                    res.data.map((actividad) => {
+                        actividad.subactividades.map((subactividad) => {
+                            subactividad.tareas.map((tarea) => {
+
+                                if (tarea.estado_revision_plan !== "aprobado") {
+
+                                    this.setState({
+                                        disabledDescargarPlan: true
+                                    })
+                                }
+                            })
+                        })
+                    })
+
+
+                }
+            })
+
     }
 
-    datosEmpresa= () =>{
+    datosEmpresa = () => {
 
-        const { proyecto} = this.state;
+        const { proyecto } = this.state;
         console.log(proyecto.anteproyecto);
     }
-     //alert(proyecto.anteproyecto.alumno.no_control+" nombre "+proyecto.anteproyecto.alumno.nombre +" " +proyecto.anteproyecto.alumno.ap_paterno+" "+proyecto.anteproyecto.alumno.ap_materno+" proyecto "+ proyecto.anteproyecto.nombre+
-        //" empresa "+ nombre + "empresa"+ proyecto.anteproyecto.asesor_externo.nombre);
+    //alert(proyecto.anteproyecto.alumno.no_control+" nombre "+proyecto.anteproyecto.alumno.nombre +" " +proyecto.anteproyecto.alumno.ap_paterno+" "+proyecto.anteproyecto.alumno.ap_materno+" proyecto "+ proyecto.anteproyecto.nombre+
+    //" empresa "+ nombre + "empresa"+ proyecto.anteproyecto.asesor_externo.nombre);
     updateSeguimientos = () => {
         const { proyecto } = this.state;
         axios.get(`/api/proyecto/${proyecto.id}/seguimientos`)
@@ -293,7 +327,7 @@ export default class Proyecto extends Component {
             }
         })
     }
-  
+
     showEvaluacionAsesorInterno = (alumno) => {
         if (alumno.plan_estudios === '2009-2010') {
             axios.get('/api/proyecto/evaluacionAnexoIII/criterios/asesor_interno/')
@@ -328,16 +362,16 @@ export default class Proyecto extends Component {
         }
 
     }
-   
-    
-    autorizarCartaDeLiberacionAsesorInterno = (check, id_proyecto,id_alumno,situacion,numeroDeNoCumplidos) => {
+
+
+    autorizarCartaDeLiberacionAsesorInterno = (check, id_proyecto, id_alumno, situacion, numeroDeNoCumplidos) => {
         axios.put('/api/proyecto/autorizar_carta_liberacion/asesor_interno', {
             id_proyecto,
             autorizar: check
         }).then(res => {
             if (res.status === 200) {
                 message.success('Se ha actualizado la autorización de la carta de liberación.')
-                
+
             } else {
                 message.warn('Error al autorizar la carta de liberación consultar al administrador.')
             }
@@ -349,7 +383,7 @@ export default class Proyecto extends Component {
     updateProyecto = () => {
         this.props.updateProyecto();
     }
-    actualizacionASTF = (id)=>{
+    actualizacionASTF = (id) => {
         axios.put('/api/alumno/situacion', {
             id,
             estado: 'termino satisfactoriamente'
@@ -363,21 +397,40 @@ export default class Proyecto extends Component {
             }
         })
     }
-    showPlan=()=>{
+    showPlan = () => {
         this.setState({
-            visiblePlanDeTrabajo:true
+            visiblePlanDeTrabajo: true
         })
     }
+    prorrogaPlanTrabajo=()=>{
+        let fecha_actual=moment().format('YYYY-MM-DD');
+        axios.post('/api/plan_de_trabajo/updateProrrogaPlanTrabajo', {
+          id: this.state.proyecto.id,
+          prorroga_fecha_entrega_plan: fecha_actual,
+        }).then((res) => {
+          // console.log(res)
+          if (res.status === 200) {
+            message.success("Permiso autorizado")
+            
+          } else {
+            message.error("Error comuniquese con el administrador")
+            
+          }
+         
+        }).catch((err) => {
+          message.error(err);
+        })
+      }
     render() {
-        const { nombre,criterios_evaluacion, visibleEvaluacionAsesorInterno, proyecto, visibleAddObservacion, tipo_observacion, usuario, observaciones, asesorias, id_asesoria, visibleAddSolucion, seguimientos, renderSeguimiento } = this.state
+        const { nombre, criterios_evaluacion, visibleEvaluacionAsesorInterno, proyecto, visibleAddObservacion, tipo_observacion, usuario, observaciones, asesorias, id_asesoria, visibleAddSolucion, seguimientos, renderSeguimiento } = this.state
         var numeroDeNoCumplidos = 0;
-        var SituacionDelResidente=proyecto.anteproyecto.alumno.situacion[0].estado,idResidente= proyecto.anteproyecto.alumno.id;
-        console.log(SituacionDelResidente+"--"+idResidente)
+        var SituacionDelResidente = proyecto.anteproyecto.alumno.situacion[0].estado, idResidente = proyecto.anteproyecto.alumno.id;
+        console.log(SituacionDelResidente + "--" + idResidente)
         seguimientos.map((seguimiento_proyecto, key) => {
             seguimiento_proyecto.estado_seguimiento === 'no cumplio' ? numeroDeNoCumplidos += 1 : ''
         })
 
-          
+
         const observacionesPlanTrabajo = observaciones.filter(obs => obs.tipo === 'plan_de_trabajo').map((observacion) => {
             return {
                 key: uuid.v1(),
@@ -513,22 +566,22 @@ export default class Proyecto extends Component {
                         </Form>
                         <Row className="border-top">
                             <Col xs={24} lg={6} >
-                            
-                             <Button icon="eye" type="primary" onClick={this.showPlan}>Plan de trabajo</Button>
-
-                                
+                                <p style={{ marginBottom: 20 }}>Plan de trabajo</p>
+                                <Button style={{ display: this.state.disabledDescargarPlan ? "block" : "none" }} icon="eye" type="primary" onClick={this.showPlan}>Plan de trabajo</Button>
+                                <Button style={{ display: this.state.disabledDescargarPlan ? "none" : "block" }} icon="eye" type="primary" onClick={this.prorrogaPlanTrabajo}>Permitir adjuntar plan de trabajo </Button>
                             </Col>
-                           
+
                         </Row>
                         <Row className="border-top">
                             <Col xs={24} lg={24}>
-                                 <a  href={`/api/plan_de_trabajo/${this.state.proyecto.id}/get_cronograma`} target="_blank"><Button icon="file-pdf" disabled={this.state.disabledDescargarPlan} type="primary">Generar cronograma de actividades</Button></a>
+                                <p style={{ marginBottom: 20 }}>Cronograma de actividades</p>
+                                <a href={`/api/plan_de_trabajo/${this.state.proyecto.id}/get_cronograma`} target="_blank"><Button icon="file-pdf" disabled={this.state.disabledDescargarPlan} type="primary">Generar cronograma de actividades</Button></a>
                             </Col>
                         </Row>
                     </TabPane>
                     <TabPane tab={<span><Icon type="solution" />Revisión semanal</span>} key="revisionSemanal">
                         <Row>
-                            <RevisionSemanalDocente proyecto={this.state.proyecto} usuario={this.state.usuario} nombre_asesor_interno={this.state.nombre}/>
+                            <RevisionSemanalDocente proyecto={this.state.proyecto} usuario={this.state.usuario} nombre_asesor_interno={this.state.nombre} />
                         </Row>
                     </TabPane>
                     <TabPane tab={<span><Icon type="calendar" />Seguimientos</span>} key="seguimientos">
@@ -538,7 +591,7 @@ export default class Proyecto extends Component {
                                 return (
                                     <TabPane tab={<span><Icon type="schedule" />{`Seguimiento ${index + 1}`}</span>} key={seguimiento.id}>
                                         {renderSeguimiento}
-                                        
+
                                     </TabPane>
                                 )
                             }))}
@@ -571,7 +624,7 @@ export default class Proyecto extends Component {
                                                     <Button style={{ marginBottom: 30 }} onClick={() => this.showEvaluacionAsesorInterno(proyecto.anteproyecto.alumno)} icon="bars" type="primary">Realizar evaluación</Button>
                                                     <h4 style={{ marginBottom: 10 }}>Autorizar carta de liberación</h4>
                                                     <Tooltip title={(proyecto.id_evaluacion_asesor_interno === null) ? "Antes de autorizar la carta de liberación debe realizar la evaluación." : ""}>
-                                                        <Switch disabled={(proyecto.id_evaluacion_asesor_interno === null) ? true : false} defaultChecked={proyecto.autorizar_carta_liberacion_asesor_interno} checkedChildren="Autorizado" onChange={(e) => this.autorizarCartaDeLiberacionAsesorInterno(e, proyecto.id,idResidente,SituacionDelResidente,numeroDeNoCumplidos)} unCheckedChildren={<Icon type="cross" />} />
+                                                        <Switch disabled={(proyecto.id_evaluacion_asesor_interno === null) ? true : false} defaultChecked={proyecto.autorizar_carta_liberacion_asesor_interno} checkedChildren="Autorizado" onChange={(e) => this.autorizarCartaDeLiberacionAsesorInterno(e, proyecto.id, idResidente, SituacionDelResidente, numeroDeNoCumplidos)} unCheckedChildren={<Icon type="cross" />} />
                                                     </Tooltip>
                                                     {/* {
                                                         numeroDeNoCumplidos > 0 ?
@@ -591,9 +644,9 @@ export default class Proyecto extends Component {
                         </Tabs>
                     </TabPane>
                 </Tabs>
-                <FormPlanDeTrabajo  visible={this.state.visiblePlanDeTrabajo} proyecto={this.state.proyecto}  usuario={this.state.usuario} nombre_asesor_interno={this.state.nombre}/>
+                <FormPlanDeTrabajo visible={this.state.visiblePlanDeTrabajo} proyecto={this.state.proyecto} usuario={this.state.usuario} nombre_asesor_interno={this.state.nombre} />
 
-                
+
             </div>
         )
     }

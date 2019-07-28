@@ -71,8 +71,8 @@ class FormPlanTrabajo extends Component {
     }
 
     onChange = () => {
-
-        this.state.showEvidencia()
+        const { showEvidencia } = this.props
+        showEvidencia()
         //alert("que hay")
     }
 
@@ -97,7 +97,7 @@ class FormPlanTrabajo extends Component {
                         onChange={() => this.onChange()}
                     >
                         <Icon type="inbox" style={{ fontSize: '50px', color: '#08c' }} />
-                        <div className="ant-upload-hint">Debe pesar menos de 10 MB.</div>
+                        <div className="ant-upload-hint">Debe pesar menos de 300 kb.</div>
                     </Upload.Dragger>
 
                 </FormItem>

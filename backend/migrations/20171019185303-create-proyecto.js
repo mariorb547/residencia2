@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
+      prorroga_fecha_entrega_plan: {
+        type: Sequelize.DATEONLY,
+        allowNull: true
+      }, 
       filename_cronograma: {
         type: Sequelize.STRING(200),
         allowNull: true,

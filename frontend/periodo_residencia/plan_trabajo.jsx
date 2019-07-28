@@ -8,6 +8,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 class FormPlanTrabajo extends Component{
+   
     // FUNCTIONS UPLOAD FILE
     normFile = (e) => {
         // console.log('Upload event:', e);
@@ -29,9 +30,17 @@ class FormPlanTrabajo extends Component{
     }
 
     // END FUNCTIONS UPLOAD FILE
+   
     render(){
+
         const {getFieldDecorator} = this.props.form;
         const {proyecto} = this.props
+        this.state={
+            editable:false
+        }
+
+        let fecha_actual=moment().format('YYYY-MM-DD');
+        
         // console.log('aui', this.props)
         return (
             <Form onSubmit={this.handleSubmit} >
@@ -47,9 +56,11 @@ class FormPlanTrabajo extends Component{
                                 name="filePlanTrabajo"
                                 action={`/api/alumno/file_plan_trabajo/${proyecto.id}`}
                                 beforeUpload={this.beforeUpload}
+                                disabled={ proyecto.filename_plan_trabajo && fecha_actual!==proyecto.prorroga_fecha_entrega_plan? true:false}
                             >
                                 <p className="ant-upload-drag-icon">
                                 <Icon type="inbox" />
+                                
                                 </p>
                                 <p className="ant-upload-text">Da click para seleccionar o arrastra tu archivo .pdf</p>
                                 <p className="ant-upload-hint">Tu archivo debe pesar menos de 10 MB.</p>
@@ -63,6 +74,7 @@ class FormPlanTrabajo extends Component{
 }
 
 const WrappedFormPlanTrabajo = Form.create({
+   
     mapPropsToFields(props) {
       return {
         props

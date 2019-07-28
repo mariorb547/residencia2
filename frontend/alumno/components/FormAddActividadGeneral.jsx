@@ -14,7 +14,7 @@ import '../../styling.css';
 
 const CreateFormAddActividadGeneral = Form.create()(
     (props => {
-        const { visible, onCancel, onCreate, form, carrera, alumnos_rechazados, addToPeriodo } = props;
+        const { visible, onCancel, onCreate, form, numeroOrden } = props;
         const { getFieldDecorator } = form;
 
         function onChange(value) {
@@ -54,7 +54,8 @@ const CreateFormAddActividadGeneral = Form.create()(
             >
                 <Form layout="vertical">
                     <Row>
-
+                        <p>Orden de la ultima subactividad registrada {numeroOrden}</p>
+                        <br></br>
                         <Col span={20}>
                             <FormItem label="Actividad general">
                                 {getFieldDecorator('actividad', {
@@ -101,6 +102,8 @@ const CreateFormAddActividadGeneral = Form.create()(
 )
 
 
+ 
+
 export default class FormAddActividadGeneral extends Component {
     constructor(props) {
         super(props);
@@ -109,18 +112,22 @@ export default class FormAddActividadGeneral extends Component {
             proyeproyectoActividadGeneral: props.proyectoActividadGeneral,
             visibleRegistrarSubactividad: props.visibleRegistrarSubactividad,
             obtenerSubactividades: props.obtenerSubactividades,
-            hideAddActividadGenal:props.hideAddActividadGenal
+            hideAddActividadGenal:props.hideAddActividadGenal,
+            numeroOrden:null
         }
     }
-
+   
     componentWillReceiveProps(nextProps) {
-        const { visible, proyectoActividadGeneral, visibleRegistrarSubactividad } = nextProps;
+        const { visible, proyectoActividadGeneral, visibleRegistrarSubactividad, numeroOrden } = nextProps;
         this.setState({
             visible,
             proyectoActividadGeneral,
              visibleRegistrarSubactividad,
+             numeroOrden
             
         })
+       this.getMaxActividadGeneral();
+
     }
 
 
@@ -132,6 +139,25 @@ export default class FormAddActividadGeneral extends Component {
     showAddSubactividad = () => {
         this.setState({
             visibleRegistrarSubactividad: true
+        })
+    }
+
+    getMaxActividadGeneral=()=>{
+        axios.get(`/api/plan_de_trabajo/${this.state.proyeproyectoActividadGeneral.id}/max_actividades_generales`).then(res => {
+            if(res.status == 200){
+               this.setState({
+                 numeroOrden:res.data
+               })
+            } else {
+                Modal.error({
+                  title: 'Error ',
+                  content: (
+                    <div>
+                      {res.data.errores}
+                    </div>
+                  ), onOk() { },
+                })
+              }
         })
     }
 
@@ -200,8 +226,9 @@ export default class FormAddActividadGeneral extends Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    numeroOrden={this.state.numeroOrden}
                 />
-                <FormAddSubactividad visible1={visibleRegistrarSubactividad} obtenerSubactividades={this.state.obtenerSubactividades} proyecto={proyectoActividadGeneral} hideAddActividadGenal={this.state.hideAddActividadGenal} />
+                <FormAddSubactividad visible1={visibleRegistrarSubactividad} obtenerSubactividades={this.state.obtenerSubactividades} proyecto={proyectoActividadGeneral} hideAddActividadGenal={this.state.hideAddActividadGenal} tipoRegistro={"nueva"} />
 
             </div>
         )

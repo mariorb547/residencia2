@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Row, Col, Button, Table, Icon, Switch,Popover,Modal,message,Badge,Steps} from 'antd';
+import {Row, Col, Button, Table, Icon, Switch,Popover,Modal,message,Badge,Steps,Tag} from 'antd';
 import moment from 'moment';
 import PDF2 from 'react-pdf-js-infinite';
 import FormAddObservacion from '../components/FormAddObservacion.jsx';
@@ -726,6 +726,27 @@ export default class RevisionSemanal extends Component{
 
         return (
             <div>
+                <Row>
+                    <Col span={8}>
+                        <div>
+                            <Badge status="processing" />
+                            <Tag color="#979997">En revisión</Tag>
+                        </div>
+                    </Col>
+                    <Col span={8}>
+                        <div>
+                            <Badge status="processing" />
+                            <Tag color="#00CC00">Aprobado</Tag>
+                        </div>
+                    </Col>
+                    <Col span={8}>
+                        <div>
+                            <Badge status="processing" />
+                            <Tag color=" #FF1A1A">No aprobado</Tag>
+                        </div>
+                    </Col>
+
+                </Row>
                 <Table 
                 rowClassName={(record, index) =>record.estado_revision_semanal==='revision'?'ant-table-content-gris' :record.estado_revision_semanal==='aprobado'  ?  'ant-table-content-verde':'ant-table-content-rojo' } 
                 title={()=> 'Lista de tareas'} 
@@ -836,6 +857,14 @@ export default class RevisionSemanal extends Component{
         
         return(
             <div>
+                 <div style={{ paddingLeft: "95%" }} >
+                <Badge  count={ this.state.dataSource_observaciones.filter(solucion => {
+                 return !solucion.estado
+                 }).length} >
+                  <img src="/img/notification.png" alt="notificacion" height="30px" />
+                </Badge>
+          
+                 </div>
                 <Row>
                     
                     <Col xs={24} lg={24}>
