@@ -57,7 +57,7 @@
     "react-pdf-js-infinite": "^1.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "sequelize": "^4.8.3",
+    "sequelize": "^5.15.1",
     "strong-cluster-connect-store": "^1.0.3",
     "strong-cluster-express-store": "^0.0.1",
     "strong-store-cluster": "^1.0.1",
